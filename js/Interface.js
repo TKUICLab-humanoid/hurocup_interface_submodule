@@ -82,6 +82,18 @@ var SaveMotionData = new ROSLIB.Message({
     MotorData: [0]
 });
 
+var EndPoint = new ROSLIB.Topic({
+  ros: ros,
+  name: '/package/EndPoint',
+  messageType: 'tku_msgs/PointData'
+});
+
+var PointData = new ROSLIB.Message({
+  x: 0,
+  y: 0,
+  z: 0
+});
+
 //-----
 var SendPackageCallBack;
 var ExecuteCallBack;
@@ -146,6 +158,7 @@ function createTopics()
         document.getElementById('ReverseButton').disabled = false;
         document.getElementById('CopyButton').disabled = false;
         document.getElementById('CheckSumButton').disabled = false;
+        document.getElementById('end_point_send').disabled = false;
         executeSubscribeFlag = false;
       }
       else if(standSubscribeFlag == true)
@@ -226,6 +239,7 @@ function CheckSector(sectordata)
         document.getElementById('ReverseButton').disabled = false;
         document.getElementById('CopyButton').disabled = false;
         document.getElementById('CheckSumButton').disabled = false;
+        document.getElementById('end_point_send').disabled = false;
         doSendFlag = false;
       }
       else if(doExecuteFlag == true)
@@ -269,6 +283,7 @@ function CheckSector(sectordata)
         document.getElementById('ReverseButton').disabled = false;
         document.getElementById('CopyButton').disabled = false;
         document.getElementById('CheckSumButton').disabled = false;
+        document.getElementById('end_point_send').disabled = false;
         doExecuteFlag = false;
       }
       else if(doStandFlag == true)
@@ -842,6 +857,7 @@ function resetfunction()
   document.getElementById('ReverseButton').disabled = false;
   document.getElementById('CopyButton').disabled = false;
   document.getElementById('CheckSumButton').disabled = false;
+  document.getElementById('end_point_send').disabled = false;
 }
 
 function Multiple()
@@ -990,4 +1006,13 @@ function Merge(){
   {
     
   }
+}
+
+function hand_excute(){
+  PointData.x = Number(document.getElementById('end_x').value);
+  PointData.y = Number(document.getElementById('end_y').value);
+  PointData.z = Number(document.getElementById('end_z').value);
+
+  EndPoint.publish(PointData);
+
 }

@@ -46,7 +46,9 @@
     </p>
 
     <form id="childform" name="childform">
-        <div id="container">
+        <div id="container" >
+
+            
 			<div style="margin-left: 180px;"> 
 				<input type="text" id="filename" name="filename" value="NewFile.ini" style="width: 179px;">
 				<input type="button" id="SaveButton" value="Save" onclick="Save();" style="width:80px;" disabled="disabled">
@@ -289,7 +291,18 @@
                     <div class="smallbox" style="margin-top: 2px; width: 1150px;height: 305px; overflow-y: auto; overflow-x: hidden;">
                         <div id="AbsoluteSpeedTable" style="width: 1150px;"></div>
                     </div>
+
+
                 </div>
+
+
+            </div>
+
+            <div style="width: 800px; margin-top: 550px; margin-bottom: 16px; margin-left: 180px;"> 
+                x : <input type="text" id="end_x" value=-1  style="width: 179px;">
+                y : <input type="text" id="end_y" value=-1  style="width: 179px;">
+                z : <input type="text" id="end_z" value=-1  style="width: 179px;">
+                <input type="button" id="end_point_send" value="point_send" onclick="hand_excute();" style="width:120px;" disabled="disabled">
             </div>
         </div>
         <div id="rightarea">
