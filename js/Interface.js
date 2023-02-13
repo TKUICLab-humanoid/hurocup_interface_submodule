@@ -314,7 +314,7 @@ function Save()
   {
     SaveMotionData.motionstate = 1;
     SaveMotionData.ID = Number(document.getElementById('RelativePositionTable').getElementsByTagName('div')[i].getElementsByClassName('textbox')[0].value);
-    for(var j = 0; j < 21; j++)
+    for(var j = 0; j < 23; j++)
     {
       SaveMotionData.MotorData[j] = Number(document.getElementById('RelativePositionTable').getElementsByTagName('div')[i+1].getElementsByClassName('textbox')[j+1].value);
     }
@@ -322,7 +322,7 @@ function Save()
     InterfaceSaveMotionData.publish(SaveMotionData);
     SaveMotionData.motionstate = 2;
     SaveMotionData.ID = Number(document.getElementById('RelativeSpeedTable').getElementsByTagName('div')[i].getElementsByClassName('textbox')[0].value);
-    for(var j = 0; j < 21; j++)
+    for(var j = 0; j < 23; j++)
     {
       SaveMotionData.MotorData[j] = Number(document.getElementById('RelativeSpeedTable').getElementsByTagName('div')[i+1].getElementsByClassName('textbox')[j+1].value);
     }
@@ -333,14 +333,14 @@ function Save()
   {
     SaveMotionData.motionstate = 3;
     SaveMotionData.ID = Number(document.getElementById('AbsolutePositionTable').getElementsByTagName('div')[i].getElementsByClassName('textbox')[0].value);
-    for(var j = 0; j < 21; j++)
+    for(var j = 0; j < 23; j++)
     {
       SaveMotionData.MotorData[j] = Number(document.getElementById('AbsolutePositionTable').getElementsByTagName('div')[i+1].getElementsByClassName('textbox')[j+1].value);
     }
     InterfaceSaveMotionData.publish(SaveMotionData);
     SaveMotionData.motionstate = 4;
     SaveMotionData.ID = Number(document.getElementById('AbsoluteSpeedTable').getElementsByTagName('div')[i].getElementsByClassName('textbox')[0].value);
-    for(var j = 0; j < 21; j++)
+    for(var j = 0; j < 23; j++)
     {
       SaveMotionData.MotorData[j] = Number(document.getElementById('AbsoluteSpeedTable').getElementsByTagName('div')[i+1].getElementsByClassName('textbox')[j+1].value);
     }
@@ -388,36 +388,37 @@ function Read()
         case 1:
           NewRelativePosition();
           document.getElementById('RelativePositionTable').getElementsByTagName('div')[relativepositioncnt*2].getElementsByClassName('textbox')[0].value = MotionData.ID[i];
-          for(var j = 0; j < 21; j++)
+          for(var j = 0; j < 23; j++)
           {
-            document.getElementById('RelativePositionTable').getElementsByTagName('div')[relativepositioncnt*2+1].getElementsByClassName('textbox')[j+1].value = MotionData.RelativeData[relativepositioncnt*21+relativespeedcnt*21+j];
+            document.getElementById('RelativePositionTable').getElementsByTagName('div')[relativepositioncnt*2+1].getElementsByClassName('textbox')[j+1].value = MotionData.RelativeData[relativepositioncnt*23+relativespeedcnt*23+j];
           }
           relativepositioncnt++;
           break;
         case 2:
           NewRelativeSpeed();
           document.getElementById('RelativeSpeedTable').getElementsByTagName('div')[relativespeedcnt*2].getElementsByClassName('textbox')[0].value = MotionData.ID[i];
-          for(var j = 0; j < 21; j++)
+          for(var j = 0; j < 23; j++)
           {
-            document.getElementById('RelativeSpeedTable').getElementsByTagName('div')[relativespeedcnt*2+1].getElementsByClassName('textbox')[j+1].value = MotionData.RelativeData[relativepositioncnt*21+relativespeedcnt*21+j];
+            document.getElementById('RelativeSpeedTable').getElementsByTagName('div')[relativespeedcnt*2+1].getElementsByClassName('textbox')[j+1].value = MotionData.RelativeData[relativepositioncnt*23+relativespeedcnt*23+j];
           }
           relativespeedcnt++;
           break;
         case 3:
           NewAbsolutePosition();
           document.getElementById('AbsolutePositionTable').getElementsByTagName('div')[absolutepositioncnt*2].getElementsByClassName('textbox')[0].value = MotionData.ID[i];
-          for(var j = 0; j < 21; j++)
+          for(var j = 0; j < 23; j++)
           {
-            document.getElementById('AbsolutePositionTable').getElementsByTagName('div')[absolutepositioncnt*2+1].getElementsByClassName('textbox')[j+1].value = MotionData.AbsoluteData[absolutepositioncnt*21+absolutespeedcnt*21+j];
+            document.getElementById('AbsolutePositionTable').getElementsByTagName('div')[absolutepositioncnt*2+1].getElementsByClassName('textbox')[j+1].value = MotionData.AbsoluteData[absolutepositioncnt*23+absolutespeedcnt*23+j];
           }
           absolutepositioncnt++;
           break;
         case 4:
           NewAbsoluteSpeed();
           document.getElementById('AbsoluteSpeedTable').getElementsByTagName('div')[absolutespeedcnt*2].getElementsByClassName('textbox')[0].value = MotionData.ID[i];
-          for(var j = 0; j < 21; j++)
+          for(var j = 0; j < 23; j++)
           {
-            document.getElementById('AbsoluteSpeedTable').getElementsByTagName('div')[absolutespeedcnt*2+1].getElementsByClassName('textbox')[j+1].value = MotionData.AbsoluteData[absolutepositioncnt*21+absolutespeedcnt*21+j];
+            document.getElementById('AbsoluteSpeedTable').getElementsByTagName('div')[absolutespeedcnt*2+1].getElementsByClassName('textbox')[j+1].value = MotionData.AbsoluteData[absolutepositioncnt*23+absolutespeedcnt*23+j];
+            console.log(MotionData.AbsoluteData[absolutepositioncnt*23+absolutespeedcnt*23+j])
           }
           absolutespeedcnt++;
           break;
@@ -446,14 +447,14 @@ function SaveStand()
   {
     SaveMotionData.motionstate = 1;
     SaveMotionData.ID = Number(document.getElementById('RelativePositionTable').getElementsByTagName('div')[i].getElementsByClassName('textbox')[0].value);
-    for(var j = 0; j < 21; j++)
+    for(var j = 0; j < 23; j++)
     {
       SaveMotionData.MotorData[j] = Number(document.getElementById('RelativePositionTable').getElementsByTagName('div')[i+1].getElementsByClassName('textbox')[j+1].value);
     }
     InterfaceSaveMotionData.publish(SaveMotionData);
     SaveMotionData.motionstate = 2;
     SaveMotionData.ID = Number(document.getElementById('RelativeSpeedTable').getElementsByTagName('div')[i].getElementsByClassName('textbox')[0].value);
-    for(var j = 0; j < 21; j++)
+    for(var j = 0; j < 23; j++)
     {
       SaveMotionData.MotorData[j] = Number(document.getElementById('RelativeSpeedTable').getElementsByTagName('div')[i+1].getElementsByClassName('textbox')[j+1].value);
     }
@@ -464,20 +465,22 @@ function SaveStand()
   {
     SaveMotionData.motionstate = 3;
     SaveMotionData.ID = Number(document.getElementById('AbsolutePositionTable').getElementsByTagName('div')[i].getElementsByClassName('textbox')[0].value);
-    for(var j = 0; j < 21; j++)
+    for(var j = 0; j < 23; j++)
     {
       SaveMotionData.MotorData[j] = Number(document.getElementById('AbsolutePositionTable').getElementsByTagName('div')[i+1].getElementsByClassName('textbox')[j+1].value);
     }
     InterfaceSaveMotionData.publish(SaveMotionData);
     SaveMotionData.motionstate = 4;
     SaveMotionData.ID = Number(document.getElementById('AbsoluteSpeedTable').getElementsByTagName('div')[i].getElementsByClassName('textbox')[0].value);
-    for(var j = 0; j < 21; j++)
+    for(var j = 0; j < 23; j++)
     {
       SaveMotionData.MotorData[j] = Number(document.getElementById('AbsoluteSpeedTable').getElementsByTagName('div')[i+1].getElementsByClassName('textbox')[j+1].value);
+      console.log(SaveMotionData.MotorData[j]);
     }
     InterfaceSaveMotionData.publish(SaveMotionData);
   }
   SaveMotionData.saveflag = true;
+  
   InterfaceSaveMotionData.publish(SaveMotionData);
   SaveMotionData.saveflag = false;
   document.getElementById('label').innerHTML = "SaveStand file is successful !!";
@@ -521,9 +524,9 @@ function ReadStand()
           
           console.log(MotionData.ID[i]);
           document.getElementById('RelativePositionTable').getElementsByTagName('div')[relativepositioncnt*2].getElementsByClassName('textbox')[0].value = MotionData.ID[i];
-          for(var j = 0; j < 21; j++)
+          for(var j = 0; j < 23; j++)
           {
-            document.getElementById('RelativePositionTable').getElementsByTagName('div')[relativepositioncnt*2+1].getElementsByClassName('textbox')[j+1].value = MotionData.RelativeData[relativepositioncnt*21+relativespeedcnt*21+j];
+            document.getElementById('RelativePositionTable').getElementsByTagName('div')[relativepositioncnt*2+1].getElementsByClassName('textbox')[j+1].value = MotionData.RelativeData[relativepositioncnt*23+relativespeedcnt*23+j];
           }
           relativepositioncnt++;
           break;
@@ -532,9 +535,9 @@ function ReadStand()
           
           console.log(MotionData.ID[i]);
           document.getElementById('RelativeSpeedTable').getElementsByTagName('div')[relativespeedcnt*2].getElementsByClassName('textbox')[0].value = MotionData.ID[i];
-          for(var j = 0; j < 21; j++)
+          for(var j = 0; j < 23; j++)
           {
-            document.getElementById('RelativeSpeedTable').getElementsByTagName('div')[relativespeedcnt*2+1].getElementsByClassName('textbox')[j+1].value = MotionData.RelativeData[relativepositioncnt*21+relativespeedcnt*21+j];
+            document.getElementById('RelativeSpeedTable').getElementsByTagName('div')[relativespeedcnt*2+1].getElementsByClassName('textbox')[j+1].value = MotionData.RelativeData[relativepositioncnt*23+relativespeedcnt*23+j];
           }
           relativespeedcnt++;
           break;
@@ -542,9 +545,9 @@ function ReadStand()
           NewAbsolutePosition();
           console.log(MotionData.ID[i]);
           document.getElementById('AbsolutePositionTable').getElementsByTagName('div')[absolutepositioncnt*2].getElementsByClassName('textbox')[0].value = MotionData.ID[i];
-          for(var j = 0; j < 21; j++)
+          for(var j = 0; j < 23; j++)
           {
-            document.getElementById('AbsolutePositionTable').getElementsByTagName('div')[absolutepositioncnt*2+1].getElementsByClassName('textbox')[j+1].value = MotionData.AbsoluteData[absolutepositioncnt*21+absolutespeedcnt*21+j];
+            document.getElementById('AbsolutePositionTable').getElementsByTagName('div')[absolutepositioncnt*2+1].getElementsByClassName('textbox')[j+1].value = MotionData.AbsoluteData[absolutepositioncnt*23+absolutespeedcnt*23+j];
           }
           absolutepositioncnt++;
           break;
@@ -552,9 +555,10 @@ function ReadStand()
           NewAbsoluteSpeed();
           console.log(MotionData.ID[i]);
           document.getElementById('AbsoluteSpeedTable').getElementsByTagName('div')[absolutespeedcnt*2].getElementsByClassName('textbox')[0].value = MotionData.ID[i];
-          for(var j = 0; j < 21; j++)
+          for(var j = 0; j < 23; j++)
           {
-            document.getElementById('AbsoluteSpeedTable').getElementsByTagName('div')[absolutespeedcnt*2+1].getElementsByClassName('textbox')[j+1].value = MotionData.AbsoluteData[absolutepositioncnt*21+absolutespeedcnt*21+j];
+            document.getElementById('AbsoluteSpeedTable').getElementsByTagName('div')[absolutespeedcnt*2+1].getElementsByClassName('textbox')[j+1].value = MotionData.AbsoluteData[absolutepositioncnt*23+absolutespeedcnt*23+j];
+            console.log(MotionData.AbsoluteData[absolutepositioncnt*23+absolutespeedcnt*23+j])
           }
           absolutespeedcnt++;
           break;
@@ -776,7 +780,7 @@ function Send()
             {
               if (Number(document.getElementById('MotionTable').getElementsByTagName('div')[i+1].getElementsByClassName('textbox')[j*2 -1].value) == Number(document.getElementById('RelativePositionTable').getElementsByTagName('div')[l].getElementsByClassName('textbox')[0].value)) 
               {
-                for (var k = 0; k < 21; k++) 
+                for (var k = 0; k < 23; k++) 
                 {
                   MotionList[count++] = (Number(document.getElementById('RelativeSpeedTable').getElementsByTagName('div')[l + 1].getElementsByClassName('textbox')[k + 1].value)) & 0xff;
                   MotionList[count++] = (((Number(document.getElementById('RelativeSpeedTable').getElementsByTagName('div')[l + 1].getElementsByClassName('textbox')[k + 1].value)) >> 8) & 0xff);
