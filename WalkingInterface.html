@@ -131,7 +131,7 @@
 			Y_Swing_Shift: 0.6,
 			X_Swing_COM: 0.0,
 			BASE_LIFT_Z: 0.0,
-			Stand_Balance: false,
+			// Stand_Balance: false,
 			B_SplineParam: {
 				Kick_Point_X: 0.0,
 				Kick_Point_Y: 0.0,
@@ -167,14 +167,14 @@
 			Yaw: 0,
 			sup_f: 0,
 			nsup_f: 0,
-			sensor_modeset: 0
+			sensor_modeset: 0,
 			// GainRoll: 0,
 			// GainPitch: 0,
 			// GainKP: 0,
 			// GainKD: 0,
 			// DesireSet: false,
 			// IMUReset: false,
-			// ForceState: false,
+			// ForceState: true
 			// GainSet: false
 		});
 
@@ -217,6 +217,7 @@
 		var Kick_Point_Z_temp = 0.0;
 		var Back_Point_X_temp = 0.0;
 		var Back_Point_Z_temp = 0.0;
+		// var Balance_tmp = false;
 		var Support_Foot_Hip_Upper_Pitch_temp = 0.0;
 		var Kick_Foot_Ankle_Upper_Pitch_temp = 0.0;
 		var Support_Foot_Ankle_Upper_Pitch_temp = 0.0;
@@ -294,14 +295,14 @@
 				document.getElementById("Roll").value = msg.IMUData[0];
 				document.getElementById("Pitch").value = msg.IMUData[1];
 				document.getElementById("Yaw").value = msg.IMUData[2];
-				/*document.getElementById("Left_1").value = msg.ForceSensorData[0];
-				document.getElementById("Left_2").value = msg.ForceSensorData[1];
-				document.getElementById("Left_3").value = msg.ForceSensorData[2];
-				document.getElementById("Left_4").value = msg.ForceSensorData[3];
-				document.getElementById("Right_1").value = msg.ForceSensorData[4];
-				document.getElementById("Right_2").value = msg.ForceSensorData[5];
-				document.getElementById("Right_3").value = msg.ForceSensorData[6];
-				document.getElementById("Right_4").value = msg.ForceSensorData[7];*/
+				// document.getElementById("Left_1").value = msg.ForceSensorData[0];
+				// document.getElementById("Left_2").value = msg.ForceSensorData[1];
+				// document.getElementById("Left_3").value = msg.ForceSensorData[2];
+				// document.getElementById("Left_4").value = msg.ForceSensorData[3];
+				// document.getElementById("Right_1").value = msg.ForceSensorData[4];
+				// document.getElementById("Right_2").value = msg.ForceSensorData[5];
+				// document.getElementById("Right_3").value = msg.ForceSensorData[6];
+				// document.getElementById("Right_4").value = msg.ForceSensorData[7];
 			});
 
 			if(Wave_Topic != null)
@@ -466,6 +467,7 @@
 		}
 		function singleFun() {
 			statetype = 0;
+			Load();
 			document.getElementById("singlestep").style.display = "inline";
 			document.getElementById("continuousstep").style.display = "none";
 			document.getElementById("lcupstep").style.display = "none";
@@ -477,6 +479,7 @@
 		}
 		function ContinuousFun() {
 			statetype = 1;
+			Load();
 			document.getElementById("singlestep").style.display = "none";
 			document.getElementById("continuousstep").style.display = "inline";
 			document.getElementById("lcupstep").style.display = "none";
@@ -488,6 +491,7 @@
 		}
 		function LC_upFun() {
 			statetype = 2;
+			Load();
 			document.getElementById("singlestep").style.display = "none";
 			document.getElementById("continuousstep").style.display = "none";
 			document.getElementById("lcupstep").style.display = "inline";
@@ -499,6 +503,7 @@
 		}
 		function LC_downFun() {
 			statetype = 3;
+			Load();
 			document.getElementById("singlestep").style.display = "none";
 			document.getElementById("continuousstep").style.display = "none";
 			document.getElementById("lcupstep").style.display = "none";
@@ -510,6 +515,7 @@
 		}
 		function LongJumpFun() {
 			statetype = 4;
+			Load();
 			document.getElementById("singlestep").style.display = "inline";
 			document.getElementById("continuousstep").style.display = "none";
 			document.getElementById("lcupstep").style.display = "none";
@@ -521,6 +527,7 @@
 		}
 		function RKickBallFun() {
 			statetype = 9;
+			Load();
 			document.getElementById("singlestep").style.display = "none";
 			document.getElementById("continuousstep").style.display = "none";
 			document.getElementById("lcupstep").style.display = "none";
@@ -532,6 +539,7 @@
 		}
 		function LKickBallFun() {
 			statetype = 10;
+			Load();
 			document.getElementById("singlestep").style.display = "none";
 			document.getElementById("continuousstep").style.display = "none";
 			document.getElementById("lcupstep").style.display = "none";
@@ -561,9 +569,8 @@
 				Period_T2_tmp = walkinggait_parameter.Period_T2;
 				Sample_Time_tmp = walkinggait_parameter.Sample_Time;
 				OSC_LockRange_tmp = walkinggait_parameter.OSC_LockRange;
-
+				// Balance_tmp = walkinggait_parameter.Stand_Balance;
 				T_DSP_tmp = walkinggait_parameter.OSC_LockRange;
-
 				BASE_Default_Z_tmp = walkinggait_parameter.BASE_Default_Z;
 				Y_Swing_Shift_tmp = walkinggait_parameter.Y_Swing_Shift;
 				X_Swing_COM_tmp = walkinggait_parameter.X_Swing_COM;
@@ -578,15 +585,25 @@
 				Support_Foot_Ankle_Upper_Pitch_temp = walkinggait_parameter.B_SplineParam.Support_Foot_Ankle_Upper_Pitch;
 				switch (statetype) {
 					case 0:
+						//
+						document.getElementById("X_Swing").value = X_Swing_Range_tmp;
+						document.getElementById("Y_Swing").value = Y_Swing_Range_tmp;
 						document.getElementById("Period_T").value = Period_T_tmp;
-						document.getElementById("T_DSP").value = T_DSP_tmp;
+						//document.getElementById("Period_T2").value = Period_T2_tmp;
+						//document.getElementById("Sample_Time").value = Sample_Time_tmp;
+						document.getElementById("OSC_LockRange").value = OSC_LockRange_tmp;
 						document.getElementById("BASE_Default_Z").value = BASE_Default_Z_tmp;
+						document.getElementById("X_Swing_COM").value = X_Swing_COM_tmp;
+						document.getElementById("BASE_LIFT_Z").value = BASE_LIFT_Z_tmp;
+						// document.getElementById("balance_").checked = Balance_tmp
 						break;
 					case 1:
+						document.getElementById("cX_Swing").value = X_Swing_Range_tmp;
 						document.getElementById("cPeriod_T").value = Period_T_tmp;
 						document.getElementById("cY_Swing").value = Y_Swing_Range_tmp;
 						document.getElementById("cT_DSP").value = T_DSP_tmp;
 						document.getElementById("cBASE_Default_Z").value = BASE_Default_Z_tmp;
+						// document.getElementById("balance_").checked = Balance_tmp
 						break;
 
 					case 4:
@@ -611,18 +628,20 @@
 						document.getElementById("luBASE_Default_Z").value = BASE_Default_Z_tmp;
 						document.getElementById("luX_Swing_COM").value = X_Swing_COM_tmp;
 						document.getElementById("luBASE_LIFT_Z").value = BASE_LIFT_Z_tmp;
+						// document.getElementById("balance_").checked = Balance_tmp
 						break;
 					case 3:
 						document.getElementById("ldX_Swing").value = X_Swing_Range_tmp;
 						document.getElementById("ldY_Swing").value = Y_Swing_Range_tmp;
-						document.getElementById("ldZ_Swing").value = Z_Swing_Range_tmp;
+						// document.getElementById("ldZ_Swing").value = Z_Swing_Range_tmp;
 						document.getElementById("ldPeriod_T").value = Period_T_tmp;
-						document.getElementById("ldPeriod_T2").value = Period_T2_tmp;
-						document.getElementById("ldSample_Time").value = Sample_Time_tmp;
+						// document.getElementById("ldPeriod_T2").value = Period_T2_tmp;
+						// document.getElementById("ldSample_Time").value = Sample_Time_tmp;
 						document.getElementById("ldOSC_LockRange").value = OSC_LockRange_tmp;
 						document.getElementById("ldBASE_Default_Z").value = BASE_Default_Z_tmp;
 						document.getElementById("ldX_Swing_COM").value = X_Swing_COM_tmp;
 						document.getElementById("ldBASE_LIFT_Z").value = BASE_LIFT_Z_tmp;
+						// document.getElementById("balance_").checked = Balance_tmp
 						break;
 					case 9:
 					case 10:
@@ -653,7 +672,21 @@
 			parameter_msg.Y_Swing_Shift = Number(Y_Swing_Shift_tmp);
 			parameter_msg.X_Swing_COM = Number(X_Swing_COM_tmp);
 			parameter_msg.BASE_LIFT_Z = Number(BASE_LIFT_Z_tmp);
-			//parameter_msg.Stand_Balance = document.getElementById("balance_").checked;
+			
+			// switch (statetype) {
+			// 	case 0:
+			// 		parameter_msg.Stand_Balance = document.getElementById("balance_").checked;
+			// 		break;
+			// 	case 1:
+			// 		parameter_msg.Stand_Balance = document.getElementById("cbalance_").checked;
+			// 		break;
+			// 	case 2:
+			// 		parameter_msg.Stand_Balance = document.getElementById("lubalance_").checked;
+			// 		break;
+			// 	case 3:
+			// 		parameter_msg.Stand_Balance = document.getElementById("ldbalance_").checked;
+			// 		break;
+			// }
 			parameter_msg.B_SplineParam.Kick_Point_X = Number(Kick_Point_X_temp);
 			parameter_msg.B_SplineParam.Kick_Point_Y = Number(Kick_Point_Y_temp);
 			parameter_msg.B_SplineParam.Kick_Point_Z = Number(Kick_Point_Z_temp);
@@ -784,7 +817,7 @@
 			OSC_LockRange_tmp = value;
 			switch (statetype) {
 				case 0:
-					document.getElementById("T_DSP").value = OSC_LockRange_tmp;
+					document.getElementById("OSC_LockRange").value = OSC_LockRange_tmp;
 					break;
 				case 1:
 					document.getElementById("cT_DSP").value = OSC_LockRange_tmp;
@@ -803,9 +836,9 @@
 		function changeT_DSP_value(value){
 			OSC_LockRange_tmp = value;
 			switch (statetype) {
-				case 0:
-					document.getElementById("T_DSP").value = OSC_LockRange_tmp;
-					break;
+				// case 0:
+				// 	document.getElementById("T_DSP").value = OSC_LockRange_tmp;
+				// 	break;
 				case 1:
 					document.getElementById("cT_DSP").value = OSC_LockRange_tmp;
 					break;
@@ -836,6 +869,10 @@
 		function changeX_Swing_COM_value(value) {
 			X_Swing_COM_tmp = value;
 			switch (statetype) {
+				case 0:
+					document.getElementById("X_Swing_COM").value = X_Swing_COM_tmp;
+				case 1:
+					document.getElementById("cX_Swing_COM").value = X_Swing_COM_tmp;
 				case 2:
 					document.getElementById("luX_Swing_COM").value = X_Swing_COM_tmp;
 					break;
@@ -847,6 +884,9 @@
 		function changeBASE_LIFT_Z_value(value) {
 			BASE_LIFT_Z_tmp = value;
 			switch (statetype) {
+				case 0:
+					document.getElementById("BASE_LIFT_Z").value = BASE_LIFT_Z_tmp;
+					break;
 				case 2:
 					document.getElementById("luBASE_LIFT_Z").value = BASE_LIFT_Z_tmp;
 					break;
@@ -939,7 +979,24 @@
 			}
 			Continuousback_Topic.publish(Continuousback_msg);
 		}
-
+		// function changeBalance_value(value)
+		// {
+		// 	Balance_tmp = value;
+		// 	switch (statetype) {
+		// 		case 0:
+		// 			document.getElementById("balance_").checked = Balance_tmp;
+		// 			break;
+		// 		case 1:
+		// 			document.getElementById("cbalance_").checked = Balance_tmp;
+		// 			break;
+		// 		case 2:
+		// 			document.getElementById("lubalance_").checked = Balance_tmp;
+		// 			break;
+		// 		case 3:
+		// 			document.getElementById("ldbalance_").checked = Balance_tmp;
+		// 			break;
+		// 	}
+		// }
 		function DrawaXYaxisfun()
 		{
 			var onepoint = document.getElementById("myCanvas");
@@ -1618,18 +1675,18 @@
 			// else {
 			// 	SensorSet_msg.IMUReset = false;
 			// }
-			/*if (document.getElementById("ForceState").checked) {
-				SensorSet_msg.ForceState = true;
-			}
-			else {
-				SensorSet_msg.ForceState = false;
-			}
-			if (document.getElementById("GainSet").checked) {
-				SensorSet_msg.GainSet = true;
-			}
-			else {
-				SensorSet_msg.GainSet = false;
-			}*/
+			// if (document.getElementById("ForceState").checked) {
+			// 	SensorSet_msg.ForceState = true;
+			// }
+			// else {
+			// 	SensorSet_msg.ForceState = false;
+			// }
+			// if (document.getElementById("GainSet").checked) {
+			// 	SensorSet_msg.GainSet = true;
+			// }
+			// else {
+			// 	SensorSet_msg.GainSet = false;
+			// }
 			SensorSet_Publisher.publish(SensorSet_msg);
 		}
 		function SendGainSet()
@@ -1672,9 +1729,9 @@
 	<!-- NAV BAR -->
 	<ul>
 		<li><a target="_blank" style="text-decoration: underline;" class="navbarright" href="WalkingInterface.html">Walking</a></li>
-		<li><a target="_blank" class="navbarright" href="MotionControlInterface.html">Motion</a></li>
-		<li><a target="_blank" class="navbarright" href="ImageProcessInterface.html">ImageProcess</a></li>
-		<li><a target="_blank" class="navbarright" href="index.html">Home</a></li>
+        <li><a target="_blank" class="navbarright" href="MotionControlInterface.html">Motion</a></li>
+        <li><a target="_blank" class="navbarright" href="ImageProcessInterface.html">ImageProcess</a></li>
+        <li><a target="_blank" class="navbarright" href="PIDcontroll.html">PIDcontroll</a></li>
 		<li class="logo" style="width: 226px;">
 			<a target="_blank" href="index.html" class="logo"><img id="logoimg" src="./resources/TKU_ICLab/iclablogo-02.png"></a>
 		</li>
@@ -1763,7 +1820,7 @@
 						<td>Yaw:</td>
 						<td><input type="text" name="Yaw" id="Yaw" value="0" style="width: 70px"></td>
 					</tr>
-					<!--<tr>
+					<!-- <tr>
 						<td>&nbsp</td>
 					</tr>
 					<tr>
@@ -1800,12 +1857,12 @@
 					<tr>
 						<td>Right_4:</td>
 						<td><input type="text" name="Right_4" id="Right_4" value="0" style="width: 70px"></td>
-					</tr>-->
-					<table style="margin-top: 20px "></table>
+					</tr>
+					<table style="margin-top: 20px "></table> -->
 					<!--<input style="margin-top: 10px " type="checkbox" id="DesireSet" value="DesireSet">ShowSensorValue-->
 					<!-- <input style="margin-top: 10px " type="checkbox" id="IMUReset" value="IMUReset">IMUReset<p></p> -->
-					<!--input style="margin-top: 10px " type="checkbox" id="ForceState" value="ForceState">ForceState&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-					<input style="margin-top: 10px " type="checkbox" id="GainSet" value="GainSet">GainSet-->
+					<!-- <input style="margin-top: 10px " type="checkbox" id="ForceState" value="ForceState">ForceState&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; -->
+					<!-- <input style="margin-top: 10px " type="checkbox" id="GainSet" value="GainSet">GainSet -->
 				</table>
 				<button type="button" style="width: 100px;height: 40px; margin-left: 20px; margin-top: 5px;display: inline-block;" onclick="SendSensorSet()">IMU reset</button>
 				</table>
@@ -1872,18 +1929,50 @@
 				<br /><br />
 				<table>
 					<tr>
+						<td>COM_Y_shift</td>
+						<td><input type="text" name="X_Swing" id="X_Swing" value="0" style="width: 140px" onchange="changeX_Swing_value(this.value)"></td>
+					</tr>
+					<tr>
+						<td>Y_Swing</td>
+						<td><input type="text" name="Y_Swing" id="Y_Swing" value="0" style="width: 140px" onchange="changeY_Swing_value(this.value)"></td>
+					</tr>
+					<!--<tr>
+						<td>Z_Swing</td>
+						<td><input type="text" name="Z_Swing" id="luZ_Swing" value="0" style="width: 140px" onchange="changeZ_Swing_value(this.value)"></td>
+					</tr>-->
+					<tr>
 						<td>Period_T</td>
 						<td><input type="text" name="Period_T" id="Period_T" value="0" style="width: 140px" onchange="changePeriod_T_value(this.value)"></td>
 					</tr>
+					<!--<tr>
+						<td>Period_T2</td>
+						<td><input type="text" name="Period_T2" id="luPeriod_T2" value="0" style="width: 140px" onchange="changePeriod_T2_value(this.value)"></td>
+					</tr>-->
+					<!--<tr>
+						<td>Sample_Time</td>
+						<td><input type="text" name="Sample_Time" id="luSample_Time" value="0" style="width: 140px" onchange="changeSample_Time_value(this.value)"></td>
+					</tr>-->
 					<tr>
-						<td>T_DSP</td>
-						<td><input type="text" name="T_DSP" id="T_DSP" value="0" style="width: 140px" onchange="changeT_DSP_value(this.value)"></td>
+						<td>OSC_LockRange</td>
+						<td><input type="text" name="OSC_LockRange" id="OSC_LockRange" value="0" style="width: 140px" onchange="changeOSC_LockRange_value(this.value)"></td>
 					</tr>
 					<tr>
 						<td>BASE_Default_Z</td>
 						<td><input type="text" name="BASE_Default_Z" id="BASE_Default_Z" value="0" style="width: 140px" onchange="changeBASE_Default_Z_value(this.value)"></td>
 					</tr>
+					<tr>
+						<td>right_z_shift</td>
+						<td><input type="text" name="X_Swing_COM" id="X_Swing_COM" value="0" style="width: 140px" onchange="changeX_Swing_COM_value(this.value)"></td>
+					</tr>
+					<tr>
+						<td>BASE_LIFT_Z</td>
+						<td><input type="text" name="BASE_LIFT_Z" id="BASE_LIFT_Z" value="0" style="width: 140px" onchange="changeBASE_LIFT_Z_value(this.value)"></td>
+					</tr>
 				</table>
+				<!-- <tr>
+					<td><input style="margin-top: 10px " type="checkbox" name="balance" id="balance_" value="balance" ></td>
+					<td><label for="balance_">balance</label></td>
+				</tr> -->
 				<br />
 				<button type="button" style="width: 80px;height: 40px; margin-top: 9px;" id="sss" onclick="Save()">Save</button>
 			</section>
@@ -1892,6 +1981,10 @@
 				&nbsp;&nbsp; <input type="checkbox" name="Continuousback" id="Continuousback" onclick="changeContinuousback()">Back
 				<br /><br />
 				<table>
+					<tr>
+						<td>COM_Y_shift</td>
+						<td><input type="text" name="X_Swing" id="cX_Swing" value="0" style="width: 140px" onchange="changeX_Swing_value(this.value)"></td>
+					</tr>
 					<tr>
 						<td>Y_Swing</td>
 						<td><input type="text" name="Y_Swing" id="cY_Swing" value="0" style="width: 140px" onchange="changeY_Swing_value(this.value)"></td>
@@ -1909,6 +2002,10 @@
 						<td><input type="text" name="BASE_Default_Z" id="cBASE_Default_Z" value="0" style="width: 140px" onchange="changeBASE_Default_Z_value(this.value)"></td>
 					</tr>
 				</table>
+				<!-- <tr>
+					<td><input style="margin-top: 10px " type="checkbox" name="balance" id="cbalance_" value="cbalance" ></td>
+					<td><label for="cbalance_">balance</label></td>
+				</tr> -->
 				<br />
 				<button type="button" style="width: 80px;height: 40px; margin-top: 9px;" id="sss" onclick="Save()">Save</button>
 			</section>
@@ -1917,7 +2014,7 @@
 				<br /><br />
 				<table>
 					<tr>
-						<td>-X_Swing_COM</td>
+						<td>COM_Y_shift</td>
 						<td><input type="text" name="X_Swing" id="luX_Swing" value="0" style="width: 140px" onchange="changeX_Swing_value(this.value)"></td>
 					</tr>
 					<tr>
@@ -1949,7 +2046,7 @@
 						<td><input type="text" name="BASE_Default_Z" id="luBASE_Default_Z" value="0" style="width: 140px" onchange="changeBASE_Default_Z_value(this.value)"></td>
 					</tr>
 					<tr>
-						<td>X_Swing_COM</td>
+						<td>right_z_shift</td>
 						<td><input type="text" name="X_Swing_COM" id="luX_Swing_COM" value="0" style="width: 140px" onchange="changeX_Swing_COM_value(this.value)"></td>
 					</tr>
 					<tr>
@@ -1957,10 +2054,10 @@
 						<td><input type="text" name="BASE_LIFT_Z" id="luBASE_LIFT_Z" value="0" style="width: 140px" onchange="changeBASE_LIFT_Z_value(this.value)"></td>
 					</tr>
 				</table>
-				<!--<tr>
-					<td><input style="margin-top: 10px " type="checkbox" name="balance" id="balance_" value="balance"></td>
-					<td><label for="balance_">balance</label></td>
-				</tr>-->
+				<!-- <tr>
+					<td><input style="margin-top: 10px " type="checkbox" name="lubalance" id="lubalance_" value="lubalance" ></td>
+					<td><label for="lubalance_">balance</label></td>
+				</tr> -->
 				<br />
 				<button type="button" style="width: 80px;height: 40px; margin-top: 9px;" id="sss" onclick="Save()">Save</button>
 			</section>
@@ -1969,7 +2066,7 @@
 				<br /><br />
 				<table>
 					<tr>
-						<td>-X_Swing_COM</td>
+						<td>COM_Y_shift</td>
 						<td><input type="text" name="X_Swing" id="ldX_Swing" value="0" style="width: 140px" onchange="changeX_Swing_value(this.value)"></td>
 					</tr>
 					<tr>
@@ -2001,7 +2098,7 @@
 						<td><input type="text" name="BASE_Default_Z" id="ldBASE_Default_Z" value="0" style="width: 140px" onchange="changeBASE_Default_Z_value(this.value)"></td>
 					</tr>
 					<tr>
-						<td>X_Swing_COM</td>
+						<td>right_z_shift</td>
 						<td><input type="text" name="X_Swing_COM" id="ldX_Swing_COM" value="0" style="width: 140px" onchange="changeX_Swing_COM_value(this.value)"></td>
 					</tr>
 					<tr>
@@ -2009,6 +2106,10 @@
 						<td><input type="text" name="BASE_LIFT_Z" id="ldBASE_LIFT_Z" value="0" style="width: 140px" onchange="changeBASE_LIFT_Z_value(this.value)"></td>
 					</tr>
 				</table>
+				<!-- <tr>
+					<td><input style="margin-top: 10px " type="checkbox" name="ldbalance" id="ldbalance_" value="ldbalance" ></td>
+					<td><label for="ldbalance_">balance</label></td>
+				</tr> -->
 				<br />
 				<button type="button" style="width: 80px;height: 40px; margin-top: 9px;" id="sss" onclick="Save()">Save</button>
 			</section>
