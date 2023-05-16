@@ -1670,6 +1670,9 @@
 			// if (document.getElementById("IMUReset").checked) {
 				sensor_modeset += 0x02;
 				SensorSet_msg.sensor_modeset = sensor_modeset;
+				SensorSet_msg.sensor_P = 1;
+				SensorSet_msg.sensor_I = 1;
+				SensorSet_msg.sensor_D = 1;
 				// SensorSet_msg.IMUReset = true;
 			// }
 			// else {
