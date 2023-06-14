@@ -332,6 +332,9 @@
 				document.getElementById("Roll").value = msg.IMUData[0];
 				document.getElementById("Pitch").value = msg.IMUData[1];
 				document.getElementById("Yaw").value = msg.IMUData[2];
+				document.getElementById("Accel_X").value = msg.AccelData[0];
+				document.getElementById("Accel_Y").value = msg.AccelData[1];
+				document.getElementById("Accel_Z").value = msg.AccelData[2];
 				// document.getElementById("Left_1").value = msg.ForceSensorData[0];
 				// document.getElementById("Left_2").value = msg.ForceSensorData[1];
 				// document.getElementById("Left_3").value = msg.ForceSensorData[2];
@@ -1872,6 +1875,21 @@
 					<tr>
 						<td>Yaw:</td>
 						<td><input type="text" name="Yaw" id="Yaw" value="0" style="width: 70px"></td>
+					</tr>
+					<tr>
+						<td style="color:#888;font-size: 18px">Accel:</td>
+					</tr>
+					<tr>
+						<td>X:</td>
+						<td><input type="text" name="Accel_X" id="Accel_X" value="0" style="width: 70px"></td>
+					</tr>
+					<tr>
+						<td>Y:</td>
+						<td><input type="text" name="Accel_Y" id="Accel_Y" value="0" style="width: 70px"></td>
+					</tr>
+					<tr>
+						<td>Z:</td>
+						<td><input type="text" name="Accel_Z" id="Accel_Z" value="0" style="width: 70px"></td>
 					</tr>
 					<!-- <tr>
 						<td>&nbsp</td>
