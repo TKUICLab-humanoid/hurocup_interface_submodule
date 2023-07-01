@@ -120,13 +120,21 @@
 			Build: true
 		});
 
-		var SaveHSVClient = new ROSLIB.Service({
-			ros: ros,
-			name: '/SaveHSV',
-			serviceType: 'tku_msgs/SaveHSV'
-		});
-		var SaveHSVreqrest = new ROSLIB.ServiceRequest({
-			Save: true
+		var SaveHSVClient
+		var SaveHSVreqrest
+
+		paramClient.get(function(value) {
+			console.log('/location 參數的值：', value);
+
+			SaveHSVClient = new ROSLIB.Service({
+				ros: ros,
+				name: '/SaveHSV',
+				serviceType: 'tku_msgs/SaveHSV'
+			});
+			SaveHSVreqrest = new ROSLIB.ServiceRequest({
+				Save: true,
+				location:value
+			});
 		});
 
 		var CameraInfoClient = new ROSLIB.Service({
