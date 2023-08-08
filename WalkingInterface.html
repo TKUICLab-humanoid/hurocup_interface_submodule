@@ -173,6 +173,12 @@
 			Y_Swing_Shift: 0.6,
 			X_Swing_COM: 0.0,
 			BASE_LIFT_Z: 0.0,
+			/*!!!!!!!!!!!!!!!!!!!!!!!!!*/
+			rightfoot_shift_z: 0.0,
+			com_y_swing: 0.0,
+			now_stand_height: 23.5,
+			now_com_height: 29.5,
+			/*!!!!!!!!!!!!!!!!!!!!!!!!!*/
 			Stand_Balance: false,
 			B_SplineParam: {
 				Kick_Point_X: 0.0,
@@ -199,6 +205,12 @@
 			Y_Swing_Shift: 0.6,
 			X_Swing_COM: 0.0,
 			BASE_LIFT_Z: 0.0,
+			/*!!!!!!!!!!!!!!!!!!!!!!!!!*/
+			rightfoot_shift_z: 0.0,
+			com_y_swing: 0.0,
+			now_stand_height: 23.5,
+			now_com_height: 29.5,
+			/*!!!!!!!!!!!!!!!!!!!!!!!!!*/
 			Stand_Balance: false,
 			B_SplineParam: {
 				Kick_Point_X: 0.0,
@@ -280,6 +292,12 @@
 		var Y_Swing_Shift_tmp = 0.6;
 		var X_Swing_COM_tmp = 0.0;
 		var BASE_LIFT_Z_tmp = 0.0;
+		/*!!!!!!!!!!!!!!!!!!!!!!!!!*/
+		var rightfoot_shift_z_tmp = 0.0;
+		var com_y_swing_tmp = 0.0;
+		var now_stand_height_tmp = 23.5;
+		var now_com_height_tmp = 29.5;
+		/*!!!!!!!!!!!!!!!!!!!!!!!!!*/
 		var Kick_Point_X_temp = 0.0;
 		var Kick_Point_Y_temp = 0.0;
 		var Kick_Point_Z_temp = 0.0;
@@ -643,6 +661,12 @@
 				Y_Swing_Shift_tmp = walkinggait_parameter.Y_Swing_Shift;
 				X_Swing_COM_tmp = walkinggait_parameter.X_Swing_COM;
 				BASE_LIFT_Z_tmp = walkinggait_parameter.BASE_LIFT_Z;
+				/*!!!!!!!!!!!!!!!!!!!!!!!!!*/
+				rightfoot_shift_z_tmp = walkinggait_parameter.rightfoot_shift_z;
+				com_y_swing_tmp = walkinggait_parameter.com_y_swing;
+				now_stand_height_tmp = walkinggait_parameter.now_stand_height;
+				now_com_height_tmp = walkinggait_parameter.now_com_height;
+				/*!!!!!!!!!!!!!!!!!!!!!!!!!*/
 				Kick_Point_X_temp = walkinggait_parameter.B_SplineParam.Kick_Point_X;
 				Kick_Point_Y_temp = walkinggait_parameter.B_SplineParam.Kick_Point_Y;
 				Kick_Point_Z_temp = walkinggait_parameter.B_SplineParam.Kick_Point_Z;
@@ -654,30 +678,41 @@
 				switch (statetype) {
 					case 0:
 						//
-						document.getElementById("X_Swing").value = X_Swing_Range_tmp;
+						// document.getElementById("X_Swing").value = X_Swing_Range_tmp;
 						document.getElementById("Y_Swing").value = Y_Swing_Range_tmp;
-						document.getElementById("Z_Swing").value = Z_Swing_Range_tmp;
+						// document.getElementById("Z_Swing").value = Z_Swing_Range_tmp;
 						document.getElementById("Period_T").value = Period_T_tmp;
 						//document.getElementById("Period_T2").value = Period_T2_tmp;
 						//document.getElementById("Sample_Time").value = Sample_Time_tmp;
 						document.getElementById("OSC_LockRange").value = OSC_LockRange_tmp;
 						document.getElementById("BASE_Default_Z").value = BASE_Default_Z_tmp;
-						document.getElementById("X_Swing_COM").value = X_Swing_COM_tmp;
-						document.getElementById("Y_Swing_Shift").value = Y_Swing_Shift_tmp;
+						// document.getElementById("X_Swing_COM").value = X_Swing_COM_tmp;
+						// document.getElementById("Y_Swing_Shift").value = Y_Swing_Shift_tmp;
 						document.getElementById("BASE_LIFT_Z").value = BASE_LIFT_Z_tmp;
+						/*!!!!!!!!!!!!!!!!!!!!!!!!!*/
+						document.getElementById("rightfoot_shift_z").value = rightfoot_shift_z_tmp;
+						document.getElementById("com_y_swing").value = com_y_swing_tmp;
+						document.getElementById("now_stand_height").value = now_stand_height_tmp;
+						document.getElementById("now_com_height").value = now_com_height_tmp;
+						/*!!!!!!!!!!!!!!!!!!!!!!!!!*/
 						if(Balance_tmp)
 							document.getElementById("balance_").checked;
 						else
 							document.getElementById("balance_").unchecked;
 						break;
 					case 1:
-						document.getElementById("cX_Swing").value = X_Swing_Range_tmp;
+						// document.getElementById("cX_Swing").value = X_Swing_Range_tmp;
 						document.getElementById("cPeriod_T").value = Period_T_tmp;
 						document.getElementById("cY_Swing").value = Y_Swing_Range_tmp;
 						document.getElementById("cT_DSP").value = T_DSP_tmp;
 						document.getElementById("cBASE_Default_Z").value = BASE_Default_Z_tmp;
-						document.getElementById("cZ_Swing").value = Z_Swing_Range_tmp;
-						document.getElementById("cY_Swing_Shift").value = Y_Swing_Shift_tmp;
+						// document.getElementById("cZ_Swing").value = Z_Swing_Range_tmp;
+						// document.getElementById("cY_Swing_Shift").value = Y_Swing_Shift_tmp;
+						/*!!!!!!!!!!!!!!!!!!!!!!!!!*/
+						document.getElementById("ccom_y_swing").value = com_y_swing_tmp;
+						document.getElementById("cnow_stand_height").value = now_stand_height_tmp;
+						document.getElementById("cnow_com_height").value = now_com_height_tmp;
+						/*!!!!!!!!!!!!!!!!!!!!!!!!!*/
 						if(Balance_tmp)
 							document.getElementById("balance_").checked;
 						else
@@ -696,34 +731,46 @@
 						document.getElementById("Y_Swing_Shift").value = Y_Swing_Shift_tmp;
 						break;
 					case 2:
-						document.getElementById("luX_Swing").value = X_Swing_Range_tmp;
+						// document.getElementById("luX_Swing").value = X_Swing_Range_tmp;
 						document.getElementById("luY_Swing").value = Y_Swing_Range_tmp;
-						document.getElementById("luZ_Swing").value = Z_Swing_Range_tmp;
+						// document.getElementById("luZ_Swing").value = Z_Swing_Range_tmp;
 						document.getElementById("luPeriod_T").value = Period_T_tmp;
 						//document.getElementById("luPeriod_T2").value = Period_T2_tmp;
 						//document.getElementById("luSample_Time").value = Sample_Time_tmp;
 						document.getElementById("luOSC_LockRange").value = OSC_LockRange_tmp;
 						document.getElementById("luBASE_Default_Z").value = BASE_Default_Z_tmp;
-						document.getElementById("luX_Swing_COM").value = X_Swing_COM_tmp;
-						document.getElementById("luY_Swing_Shift").value = Y_Swing_Shift_tmp;
+						// document.getElementById("luX_Swing_COM").value = X_Swing_COM_tmp;
+						// document.getElementById("luY_Swing_Shift").value = Y_Swing_Shift_tmp;
 						document.getElementById("luBASE_LIFT_Z").value = BASE_LIFT_Z_tmp;
+						/*!!!!!!!!!!!!!!!!!!!!!!!!!*/
+						document.getElementById("lurightfoot_shift_z").value = rightfoot_shift_z_tmp;
+						document.getElementById("lucom_y_swing").value = com_y_swing_tmp;
+						document.getElementById("lunow_stand_height").value = now_stand_height_tmp;
+						document.getElementById("lunow_com_height").value = now_com_height_tmp;
+						/*!!!!!!!!!!!!!!!!!!!!!!!!!*/
 						if(Balance_tmp)
 							document.getElementById("balance_").checked;
 						else
 							document.getElementById("balance_").unchecked;
 						break;
 					case 3:
-						document.getElementById("ldX_Swing").value = X_Swing_Range_tmp;
+						// document.getElementById("ldX_Swing").value = X_Swing_Range_tmp;
 						document.getElementById("ldY_Swing").value = Y_Swing_Range_tmp;
-						document.getElementById("ldZ_Swing").value = Z_Swing_Range_tmp;
+						// document.getElementById("ldZ_Swing").value = Z_Swing_Range_tmp;
 						document.getElementById("ldPeriod_T").value = Period_T_tmp;
 						// document.getElementById("ldPeriod_T2").value = Period_T2_tmp;
 						// document.getElementById("ldSample_Time").value = Sample_Time_tmp;
 						document.getElementById("ldOSC_LockRange").value = OSC_LockRange_tmp;
 						document.getElementById("ldBASE_Default_Z").value = BASE_Default_Z_tmp;
-						document.getElementById("ldX_Swing_COM").value = X_Swing_COM_tmp;
-						document.getElementById("ldY_Swing_Shift").value = Y_Swing_Shift_tmp;
+						// document.getElementById("ldX_Swing_COM").value = X_Swing_COM_tmp;
+						// document.getElementById("ldY_Swing_Shift").value = Y_Swing_Shift_tmp;
 						document.getElementById("ldBASE_LIFT_Z").value = BASE_LIFT_Z_tmp;
+						/*!!!!!!!!!!!!!!!!!!!!!!!!!*/
+						document.getElementById("ldrightfoot_shift_z").value = rightfoot_shift_z_tmp;
+						document.getElementById("ldcom_y_swing").value = com_y_swing_tmp;
+						document.getElementById("ldnow_stand_height").value = now_stand_height_tmp;
+						document.getElementById("ldnow_com_height").value = now_com_height_tmp;
+						/*!!!!!!!!!!!!!!!!!!!!!!!!!*/
 						if(Balance_tmp)
 							document.getElementById("balance_").checked;
 						else
@@ -758,6 +805,12 @@
 			parameter_msg.Y_Swing_Shift = Number(Y_Swing_Shift_tmp);
 			parameter_msg.X_Swing_COM = Number(X_Swing_COM_tmp);
 			parameter_msg.BASE_LIFT_Z = Number(BASE_LIFT_Z_tmp);
+			/*!!!!!!!!!!!!!!!!!!!!!!!!!*/
+			parameter_msg.rightfoot_shift_z = Number(rightfoot_shift_z_tmp);
+			parameter_msg.com_y_swing = Number(com_y_swing_tmp);
+			parameter_msg.now_stand_height = Number(now_stand_height_tmp);
+			parameter_msg.now_com_height = Number(now_com_height_tmp);
+			/*!!!!!!!!!!!!!!!!!!!!!!!!!*/
 			
 			switch (statetype) {
 				case 0:
@@ -796,6 +849,12 @@
 			Parameter_message_msg.Y_Swing_Shift = Number(Y_Swing_Shift_tmp);
 			Parameter_message_msg.X_Swing_COM = Number(X_Swing_COM_tmp);
 			Parameter_message_msg.BASE_LIFT_Z = Number(BASE_LIFT_Z_tmp);
+			/*!!!!!!!!!!!!!!!!!!!!!!!!!*/
+			Parameter_message_msg.rightfoot_shift_z = Number(rightfoot_shift_z_tmp);
+			Parameter_message_msg.com_y_swing = Number(com_y_swing_tmp);
+			Parameter_message_msg.now_stand_height = Number(now_stand_height_tmp);
+			Parameter_message_msg.now_com_height = Number(now_com_height_tmp);
+			/*!!!!!!!!!!!!!!!!!!!!!!!!!*/
 			Parameter_message_msg.Stand_Balance = false;
 
 			Parameter_message_msg.B_SplineParam.Kick_Point_X = Number(Kick_Point_X_temp);
@@ -1021,6 +1080,76 @@
 					break;
 			}
 		}
+		/*!!!!!!!!!!!!!!!!!!!!!!!!!*/
+		function changerightfoot_shift_z_value(value) {
+			rightfoot_shift_z_tmp = value;
+			switch (statetype) {
+				case 0:
+					document.getElementById("rightfoot_shift_z").value = rightfoot_shift_z_tmp;
+					break;
+				case 2:
+					document.getElementById("lurightfoot_shift_z").value = rightfoot_shift_z_tmp;
+					break;
+				case 3:
+					document.getElementById("ldrightfoot_shift_z").value = rightfoot_shift_z_tmp;
+					break;
+			}
+		}
+		function changecom_y_swing_value(value) {
+			com_y_swing_tmp = value;
+			switch (statetype) {
+				case 4:
+				case 0:
+					document.getElementById("com_y_swing").value = com_y_swing_tmp;
+					break;
+				case 1:
+					document.getElementById("ccom_y_swing").value = com_y_swing_tmp;
+					break;
+				case 2:
+					document.getElementById("lucom_y_swing").value = com_y_swing_tmp;
+					break;
+				case 3:
+					document.getElementById("ldcom_y_swing").value = com_y_swing_tmp;
+					break;
+			}
+		}
+		function changenow_stand_height_value(value) {
+			now_stand_height_tmp = value;
+			switch (statetype) {
+				case 4:
+				case 0:
+					document.getElementById("now_stand_height").value = now_stand_height_tmp;
+					break;
+				case 1:
+					document.getElementById("cnow_stand_height").value = now_stand_height_tmp;
+					break;
+				case 2:
+					document.getElementById("lunow_stand_height").value = now_stand_height_tmp;
+					break;
+				case 3:
+					document.getElementById("ldnow_stand_height").value = now_stand_height_tmp;
+					break;
+			}
+		}
+		function changenow_com_height_value(value) {
+			now_com_height_tmp = value;
+			switch (statetype) {
+				case 4:
+				case 0:
+					document.getElementById("now_com_height").value = now_com_height_tmp;
+					break;
+				case 1:
+					document.getElementById("cnow_com_height").value = now_com_height_tmp;
+					break;
+				case 2:
+					document.getElementById("lunow_com_height").value = now_com_height_tmp;
+					break;
+				case 3:
+					document.getElementById("ldnow_com_height").value = now_com_height_tmp;
+					break;
+			}
+		}
+		/*!!!!!!!!!!!!!!!!!!!!!!!!!*/
 		function changeKick_Point_X_value(value) {
 			Kick_Point_X_temp = value;
 			switch (statetype) {
@@ -2060,8 +2189,12 @@
 				<table>
 					<tr>
 						<td>COM_Y_shift</td>
-						<td><input type="text" name="X_Swing" id="X_Swing" value="0" style="width: 140px" onchange="changeX_Swing_value(this.value)"></td>
+						<td><input type="text" name="com_y_swing" id="com_y_swing" value="0" style="width: 140px" onchange="changecom_y_swing_value(this.value)"></td>
 					</tr>
+					<!-- <tr>
+						<td>COM_Y_shift</td>
+						<td><input type="text" name="X_Swing" id="X_Swing" value="0" style="width: 140px" onchange="changeX_Swing_value(this.value)"></td>
+					</tr> -->
 					<tr>
 						<td>Y_Swing</td>
 						<td><input type="text" name="Y_Swing" id="Y_Swing" value="0" style="width: 140px" onchange="changeY_Swing_value(this.value)"></td>
@@ -2092,11 +2225,23 @@
 					</tr>
 					<tr>
 						<td>right_z_shift</td>
-						<td><input type="text" name="X_Swing_COM" id="X_Swing_COM" value="0" style="width: 140px" onchange="changeX_Swing_COM_value(this.value)"></td>
+						<td><input type="text" name="rightfoot_shift_z" id="rightfoot_shift_z" value="0" style="width: 140px" onchange="changerightfoot_shift_z_value(this.value)"></td>
 					</tr>
+					<!-- <tr>
+						<td>right_z_shift</td>
+						<td><input type="text" name="X_Swing_COM" id="X_Swing_COM" value="0" style="width: 140px" onchange="changeX_Swing_COM_value(this.value)"></td>
+					</tr> -->
 					<tr>
 						<td>BASE_LIFT_Z</td>
 						<td><input type="text" name="BASE_LIFT_Z" id="BASE_LIFT_Z" value="0" style="width: 140px" onchange="changeBASE_LIFT_Z_value(this.value)"></td>
+					</tr>
+					<tr>
+						<td>Stand_Height</td>
+						<td><input type="text" name="now_stand_height" id="now_stand_height" value="0" style="width: 140px" onchange="changenow_stand_height_value(this.value)"></td>
+					</tr>
+					<tr>
+						<td>Com_Height</td>
+						<td><input type="text" name="now_com_height" id="now_com_height" value="0" style="width: 140px" onchange="changenow_com_height_value(this.value)"></td>
 					</tr>
 				</table>
 				<tr>
@@ -2113,8 +2258,12 @@
 				<table>
 					<tr>
 						<td>COM_Y_shift</td>
-						<td><input type="text" name="X_Swing" id="cX_Swing" value="0" style="width: 140px" onchange="changeX_Swing_value(this.value)"></td>
+						<td><input type="text" name="com_y_swing" id="ccom_y_swing" value="0" style="width: 140px" onchange="changecom_y_swing_value(this.value)"></td>
 					</tr>
+					<!-- <tr>
+						<td>COM_Y_shift</td>
+						<td><input type="text" name="X_Swing" id="cX_Swing" value="0" style="width: 140px" onchange="changeX_Swing_value(this.value)"></td>
+					</tr> -->
 					<tr>
 						<td>Y_Swing</td>
 						<td><input type="text" name="Y_Swing" id="cY_Swing" value="0" style="width: 140px" onchange="changeY_Swing_value(this.value)"></td>
@@ -2132,12 +2281,12 @@
 						<td><input type="text" name="BASE_Default_Z" id="cBASE_Default_Z" value="0" style="width: 140px" onchange="changeBASE_Default_Z_value(this.value)"></td>
 					</tr>
 					<tr>
-						<td>COM_HEIGHT</td>
-						<td><input type="text" name="Z_Swing" id="cZ_Swing" value="0" style="width: 140px" onchange="changeZ_Swing_value(this.value)"></td>
+						<td>Stand_Height</td>
+						<td><input type="text" name="now_stand_height" id="cnow_stand_height" value="0" style="width: 140px" onchange="changenow_stand_height_value(this.value)"></td>
 					</tr>
 					<tr>
-						<td>STAND_HEIGHT</td>
-						<td><input type="text" name="Y_Swing_Shift" id="cY_Swing_Shift" value="0" style="width: 140px" onchange="changeY_Swing_Shift_value(this.value)"></td>
+						<td>Com_Height</td>
+						<td><input type="text" name="now_com_height" id="cnow_com_height" value="0" style="width: 140px" onchange="changenow_com_height_value(this.value)"></td>
 					</tr>
 				</table>
 				<tr>
@@ -2154,8 +2303,12 @@
 				<table>
 					<tr>
 						<td>COM_Y_shift</td>
-						<td><input type="text" name="X_Swing" id="luX_Swing" value="0" style="width: 140px" onchange="changeX_Swing_value(this.value)"></td>
+						<td><input type="text" name="com_y_swing" id="lucom_y_swing" value="0" style="width: 140px" onchange="changecom_y_swing_value(this.value)"></td>
 					</tr>
+					<!-- <tr>
+						<td>COM_Y_shift</td>
+						<td><input type="text" name="X_Swing" id="luX_Swing" value="0" style="width: 140px" onchange="changeX_Swing_value(this.value)"></td>
+					</tr> -->
 					<tr>
 						<td>Y_Swing</td>
 						<td><input type="text" name="Y_Swing" id="luY_Swing" value="0" style="width: 140px" onchange="changeY_Swing_value(this.value)"></td>
@@ -2184,21 +2337,25 @@
 						<td>BASE_Default_Z</td>
 						<td><input type="text" name="BASE_Default_Z" id="luBASE_Default_Z" value="0" style="width: 140px" onchange="changeBASE_Default_Z_value(this.value)"></td>
 					</tr>
-					<tr>
+					<!-- <tr>
 						<td>right_z_shift</td>
 						<td><input type="text" name="X_Swing_COM" id="luX_Swing_COM" value="0" style="width: 140px" onchange="changeX_Swing_COM_value(this.value)"></td>
+					</tr> -->
+					<tr>
+						<td>right_z_shift</td>
+						<td><input type="text" name="rightfoot_shift_z" id="lurightfoot_shift_z" value="0" style="width: 140px" onchange="changerightfoot_shift_z_value(this.value)"></td>
 					</tr>
 					<tr>
 						<td>BASE_LIFT_Z</td>
 						<td><input type="text" name="BASE_LIFT_Z" id="luBASE_LIFT_Z" value="0" style="width: 140px" onchange="changeBASE_LIFT_Z_value(this.value)"></td>
 					</tr>
 					<tr>
-						<td>COM_HEIGHT</td>
-						<td><input type="text" name="Z_Swing" id="luZ_Swing" value="0" style="width: 140px" onchange="changeZ_Swing_value(this.value)"></td>
+						<td>Stand_Height</td>
+						<td><input type="text" name="now_stand_height" id="lunow_stand_height" value="0" style="width: 140px" onchange="changenow_stand_height_value(this.value)"></td>
 					</tr>
 					<tr>
-						<td>STAND_HEIGHT</td>
-						<td><input type="text" name="Y_Swing_Shift" id="luY_Swing_Shift" value="0" style="width: 140px" onchange="changeY_Swing_Shift_value(this.value)"></td>
+						<td>Com_Height</td>
+						<td><input type="text" name="now_com_height" id="lunow_com_height" value="0" style="width: 140px" onchange="changenow_com_height_value(this.value)"></td>
 					</tr>
 				</table>
 				<tr>
@@ -2215,8 +2372,12 @@
 				<table>
 					<tr>
 						<td>COM_Y_shift</td>
-						<td><input type="text" name="X_Swing" id="ldX_Swing" value="0" style="width: 140px" onchange="changeX_Swing_value(this.value)"></td>
+						<td><input type="text" name="com_y_swing" id="ldcom_y_swing" value="0" style="width: 140px" onchange="changecom_y_swing_value(this.value)"></td>
 					</tr>
+					<!-- <tr>
+						<td>COM_Y_shift</td>
+						<td><input type="text" name="X_Swing" id="ldX_Swing" value="0" style="width: 140px" onchange="changeX_Swing_value(this.value)"></td>
+					</tr> -->
 					<tr>
 						<td>Y_Swing</td>
 						<td><input type="text" name="Y_Swing" id="ldY_Swing" value="0" style="width: 140px" onchange="changeY_Swing_value(this.value)"></td>
@@ -2247,19 +2408,23 @@
 					</tr>
 					<tr>
 						<td>right_z_shift</td>
-						<td><input type="text" name="X_Swing_COM" id="ldX_Swing_COM" value="0" style="width: 140px" onchange="changeX_Swing_COM_value(this.value)"></td>
+						<td><input type="text" name="rightfoot_shift_z" id="ldrightfoot_shift_z" value="0" style="width: 140px" onchange="changerightfoot_shift_z_value(this.value)"></td>
 					</tr>
+					<!-- <tr>
+						<td>right_z_shift</td>
+						<td><input type="text" name="X_Swing_COM" id="ldX_Swing_COM" value="0" style="width: 140px" onchange="changeX_Swing_COM_value(this.value)"></td>
+					</tr> -->
 					<tr>
 						<td>BASE_LIFT_Z</td>
 						<td><input type="text" name="BASE_LIFT_Z" id="ldBASE_LIFT_Z" value="0" style="width: 140px" onchange="changeBASE_LIFT_Z_value(this.value)"></td>
 					</tr>
 					<tr>
-						<td>COM_HEIGHT</td>
-						<td><input type="text" name="Z_Swing" id="ldZ_Swing" value="0" style="width: 140px" onchange="changeZ_Swing_value(this.value)"></td>
+						<td>Stand_Height</td>
+						<td><input type="text" name="now_stand_height" id="ldnow_stand_height" value="0" style="width: 140px" onchange="changenow_stand_height_value(this.value)"></td>
 					</tr>
 					<tr>
-						<td>STAND_HEIGHT</td>
-						<td><input type="text" name="Y_Swing_Shift" id="ldY_Swing_Shift" value="0" style="width: 140px" onchange="changeY_Swing_Shift_value(this.value)"></td>
+						<td>Com_Height</td>
+						<td><input type="text" name="now_com_height" id="ldnow_com_height" value="0" style="width: 140px" onchange="changenow_com_height_value(this.value)"></td>
 					</tr>
 				</table>
 				<tr>
