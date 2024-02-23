@@ -383,6 +383,26 @@
 				// document.getElementById("Right_2").value = msg.ForceSensorData[5];
 				// document.getElementById("Right_3").value = msg.ForceSensorData[6];
 				// document.getElementById("Right_4").value = msg.ForceSensorData[7];
+				document.getElementById("Left_1").value = msg.FeedbackLHData[0];
+				document.getElementById("Left_2").value = msg.FeedbackLHData[1];
+				document.getElementById("Left_3").value = msg.FeedbackLHData[2];
+				document.getElementById("Left_4").value = msg.FeedbackLHData[3];
+				document.getElementById("Right_1").value = msg.FeedbackRHData[0];
+				document.getElementById("Right_2").value = msg.FeedbackRHData[1];
+				document.getElementById("Right_3").value = msg.FeedbackRHData[2];
+				document.getElementById("Right_4").value = msg.FeedbackRHData[3];
+				document.getElementById("Left_10").value = msg.FeedbackLFData[0];
+				document.getElementById("Left_11").value = msg.FeedbackLFData[1];
+				document.getElementById("Left_12").value = msg.FeedbackLFData[2];
+				document.getElementById("Left_13").value = msg.FeedbackLFData[3];
+				document.getElementById("Left_14").value = msg.FeedbackLFData[4];
+				document.getElementById("Left_15").value = msg.FeedbackLFData[5];
+				document.getElementById("Right_16").value = msg.FeedbackRFData[0];
+				document.getElementById("Right_17").value = msg.FeedbackRFData[1];
+				document.getElementById("Right_18").value = msg.FeedbackRFData[2];
+				document.getElementById("Right_19").value = msg.FeedbackRFData[3];
+				document.getElementById("Right_20").value = msg.FeedbackRFData[4];
+				document.getElementById("Right_21").value = msg.FeedbackRFData[5];
 			});
 
 			if(Wave_Topic != null)
@@ -2038,8 +2058,76 @@
 				<!--/table>
 				<!--button type="button" style="width: 100px;height: 40px; margin-left: 20px; margin-top: 20px;display: inline-block;" onclick="SendSensorSet()">Send</button>
 			</section>-->
+			<section id="FootFeedback" align="center" style="margin-left:calc(50% - 600px); float: left; min-width: 180px; max-width: 200px; width: 20%;">
+				<b><h align="center"style="font-size: 23px">FootFeedback</h></b>
+				<table>
+					<tr>
+						<td style="color:#888;font-size: 18px">LeftFoot:</td>
+					</tr>
+					<tr>
+						<td>Left_10:</td>
+						<td><input type="text" name="Left_10" id="Left_10" value="0" style="width: 70px"></td>
+					</tr>
+					<tr>
+						<td>Left_11:</td>
+						<td><input type="text" name="Left_11" id="Left_11" value="0" style="width: 70px"></td>
+					</tr>
+					<tr>
+						<td>Left_12:</td>
+						<td><input type="text" name="Left_12" id="Left_12" value="0" style="width: 70px"></td>
+					</tr>
+					<tr>
+						<td>Left_13:</td>
+						<td><input type="text" name="Left_13" id="Left_13" value="0" style="width: 70px"></td>
+					</tr>
+					<tr>
+						<td>Left_14:</td>
+						<td><input type="text" name="Left_14" id="Left_14" value="0" style="width: 70px"></td>
+					</tr>
+					<tr>
+						<td>Left_15:</td>
+						<td><input type="text" name="Left_15" id="Left_15" value="0" style="width: 70px"></td>
+					</tr>
+					<tr>
+						<td style="color:#888;font-size: 18px">RightFoot:</td>
+					</tr>
+					<tr>
+						<td>Right_16:</td>
+						<td><input type="text" name="Right_16" id="Right_16" value="0" style="width: 70px"></td>
+					</tr>
+					<tr>
+						<td>Right_17:</td>
+						<td><input type="text" name="Right_17" id="Right_17" value="0" style="width: 70px"></td>
+					</tr>
+					<tr>
+						<td>Right_18:</td>
+						<td><input type="text" name="Right_18" id="Right_18" value="0" style="width: 70px"></td>
+					</tr>
+					<tr>
+						<td>Right_19:</td>
+						<td><input type="text" name="Right_19" id="Right_19" value="0" style="width: 70px"></td>
+					</tr>
+					<tr>
+						<td>Right_20:</td>
+						<td><input type="text" name="Right_20" id="Right_20" value="0" style="width: 70px"></td>
+					</tr>
+					<tr>
+						<td>Right_21:</td>
+						<td><input type="text" name="Right_21" id="Right_21" value="0" style="width: 70px"></td>
+					</tr>
+					<table style="margin-top: 20px "></table>
+					<!--<input style="margin-top: 10px " type="checkbox" id="DesireSet" value="DesireSet">ShowSensorValue-->
+					<!-- <input style="margin-top: 10px " type="checkbox" id="IMUReset" value="IMUReset">IMUReset<p></p> -->
+					<!-- <input style="margin-top: 10px " type="checkbox" id="ForceState" value="ForceState">ForceState&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; -->
+					<!-- <input style="margin-top: 10px " type="checkbox" id="GainSet" value="GainSet">GainSet -->
+				<!-- </table>
+				<button type="button" style="width: 100px;height: 40px; margin-left: 20px; margin-top: 5px;display: inline-block;" onclick="SendSensorSet()">IMU reset</button>
+				</table> -->
+				
+			</section>
 			
-			<section id="SensorValue" align="center" style="margin-left:calc(50% - 430px); float: left; min-width: 180px; max-width: 200px; width: 20%;">
+			
+			<section id="SensorValue" align="center" style="margin-left:0%; float: left; min-width: 180px; max-width: 200px; width: 20%;">
 				<b><h align="center"style="font-size: 23px">Sensor_Value</h></b>
 				<table>
 					<tr>
@@ -2100,8 +2188,49 @@
 					<!-- <input style="margin-top: 10px " type="checkbox" id="IMUReset" value="IMUReset">IMUReset<p></p> -->
 					<!-- <input style="margin-top: 10px " type="checkbox" id="ForceState" value="ForceState">ForceState&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; -->
 					<!-- <input style="margin-top: 10px " type="checkbox" id="GainSet" value="GainSet">GainSet -->
+				<!-- </table>	<!-- <tr> -->
+						<!-- <td><input style="margin-left: 9px" type="checkbox" id="IMUReset" value="IMUReset">IMUReset<p></p></td>
+					</tr> --> -->
+				<table>
+					<input style="margin-left: 9px" type="checkbox" id="IMUReset" value="IMUReset">IMUReset<p></p>
+					<button type="button" style="width: 100px;height: 40px; margin-left: 20px; margin-top: 5px;display: inline-block;" onclick="SendSensorSet()">IMU reset</button>
 				</table>
-				<button type="button" style="width: 100px;height: 40px; margin-left: 20px; margin-top: 5px;display: inline-block;" onclick="SendSensorSet()">IMU reset</button>
+				<table>
+					<tr>
+						<td style="color:#888;font-size: 18px">Hand:</td>
+					</tr>
+					<tr>
+						<td>Left_1:</td>
+						<td><input type="text" name="Left_1" id="Left_1" value="0" style="width: 70px"></td>
+					</tr>
+					<tr>
+						<td>Left_2:</td>
+						<td><input type="text" name="Left_2" id="Left_2" value="0" style="width: 70px"></td>
+					</tr>
+					<tr>
+						<td>Left_3:</td>
+						<td><input type="text" name="Left_3" id="Left_3" value="0" style="width: 70px"></td>
+					</tr>
+					<tr>
+						<td>Left_4:</td>
+						<td><input type="text" name="Left_4" id="Left_4" value="0" style="width: 70px"></td>
+					</tr>
+					<tr>
+						<td>Right_5:</td>
+						<td><input type="text" name="Right_1" id="Right_1" value="0" style="width: 70px"></td>
+					</tr>
+					<tr>
+						<td>Right_6:</td>
+						<td><input type="text" name="Right_2" id="Right_2" value="0" style="width: 70px"></td>
+					</tr>
+					<tr>
+						<td>Right_7:</td>
+						<td><input type="text" name="Right_3" id="Right_3" value="0" style="width: 70px"></td>
+					</tr>
+					<tr>
+						<td>Right_8:</td>
+						<td><input type="text" name="Right_4" id="Right_4" value="0" style="width: 70px"></td>
+					</tr>
 				</table>
 				
 			</section>

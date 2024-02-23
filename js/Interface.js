@@ -18,6 +18,15 @@ ros.on('error', function (error) {
   document.getElementById('SendButton').disabled = true;
   document.getElementById('executeButton').disabled = true;
   document.getElementById('standButton').disabled = true;
+  //////////////////////////////////////////////////////////////////////////////////////////////
+  document.getElementById('LFeedbackButton').disabled = true;
+  document.getElementById('RFeedbackButton').disabled = true;
+  document.getElementById('LHandFeedbackButton').disabled = true;
+  document.getElementById('RHandFeedbackButton').disabled = true;
+  document.getElementById('RightHandTorque').disabled = true;
+  document.getElementById('RightFootTorque').disabled = true;
+  document.getElementById('LeftHandTorque').disabled = true;
+  document.getElementById('LeftFootTorque').disabled = true;
   
   document.getElementById('MultipleButton').disabled = true;
   document.getElementById('MergeButton').disabled = true;
@@ -38,6 +47,15 @@ ros.on('close', function () {
   document.getElementById('SendButton').disabled = true;
   document.getElementById('executeButton').disabled = true;
   document.getElementById('standButton').disabled = true;
+  //////////////////////////////////////////////////////////////////////////////////////////////
+  document.getElementById('LFeedbackButton').disabled = true;
+  document.getElementById('RFeedbackButton').disabled = true;
+  document.getElementById('LHandFeedbackButton').disabled = true;
+  document.getElementById('RHandFeedbackButton').disabled = true;
+  document.getElementById('RightHandTorque').disabled = true;
+  document.getElementById('RightFootTorque').disabled = true;
+  document.getElementById('LeftHandTorque').disabled = true;
+  document.getElementById('LeftFootTorque').disabled = true;
   
   document.getElementById('MultipleButton').disabled = true;
   document.getElementById('MergeButton').disabled = true;
@@ -84,6 +102,18 @@ var SaveMotionData = new ROSLIB.Message({
     MotionList: [0],
     MotorData: [0]
 });
+
+/////////////////////////////////////////////////////////////////////////////////////
+var FeedbackPackage = new ROSLIB.Topic({
+  ros: ros,
+  name: '/package/MotorFeedback',
+  messageType: 'tku_msgs/Motor_Feedback'
+});
+var SendFeedbackPackage = new ROSLIB.Message({
+  Feedback: 0
+});
+/////////////////////////////////////////////////////////////////////////////////////
+
 
 //-----
 var SendPackageCallBack = null;
@@ -158,6 +188,15 @@ function createTopics()
         document.getElementById('ReverseButton').disabled = false;
         document.getElementById('CopyButton').disabled = false;
         document.getElementById('CheckSumButton').disabled = false;
+        //////////////////////////////////////////////////////////////////////////////////////////////
+        document.getElementById('LFeedbackButton').disabled = false;
+        document.getElementById('RFeedbackButton').disabled = false;
+        document.getElementById('LHandFeedbackButton').disabled = false;
+        document.getElementById('RHandFeedbackButton').disabled = false;
+        document.getElementById('RightHandTorque').disabled = false;
+        document.getElementById('RightFootTorque').disabled = false;
+        document.getElementById('LeftHandTorque').disabled = false;
+        document.getElementById('LeftFootTorque').disabled = false;
         executeSubscribeFlag = false;
       }
       else if(standSubscribeFlag == true)
@@ -407,6 +446,15 @@ function CheckSector(sectordata)
         document.getElementById('ReverseButton').disabled = false;
         document.getElementById('CopyButton').disabled = false;
         document.getElementById('CheckSumButton').disabled = false;
+        //////////////////////////////////////////////////////////////////////////////////////////////
+        document.getElementById('LFeedbackButton').disabled = false;
+        document.getElementById('RFeedbackButton').disabled = false;
+        document.getElementById('LHandFeedbackButton').disabled = false;
+        document.getElementById('RHandFeedbackButton').disabled = false;
+        document.getElementById('RightHandTorque').disabled = false;
+        document.getElementById('RightFootTorque').disabled = false;
+        document.getElementById('LeftHandTorque').disabled = false;
+        document.getElementById('LeftFootTorque').disabled = false;
         doSendFlag = false;
       }
       else if(doExecuteFlag == true)
@@ -451,6 +499,15 @@ function CheckSector(sectordata)
         document.getElementById('ReverseButton').disabled = false;
         document.getElementById('CopyButton').disabled = false;
         document.getElementById('CheckSumButton').disabled = false;
+        //////////////////////////////////////////////////////////////////////////////////////////////
+        document.getElementById('LFeedbackButton').disabled = false;
+        document.getElementById('RFeedbackButton').disabled = false;
+        document.getElementById('LHandFeedbackButton').disabled = false;
+        document.getElementById('RHandFeedbackButton').disabled = false;
+        document.getElementById('RightHandTorque').disabled = false;
+        document.getElementById('RightFootTorque').disabled = false;
+        document.getElementById('LeftHandTorque').disabled = false;
+        document.getElementById('LeftFootTorque').disabled = false;
         doExecuteFlag = false;
       }
       else if(doStandFlag == true)
@@ -743,6 +800,15 @@ function Send()
   document.getElementById('ReadStandButton').disabled = true;
   document.getElementById('executeButton').disabled = true;
   document.getElementById('standButton').disabled = true;
+  //////////////////////////////////////////////////////////////////////////////////////////////
+  document.getElementById('LFeedbackButton').disabled = true;
+  document.getElementById('RFeedbackButton').disabled = true;
+  document.getElementById('LHandFeedbackButton').disabled = true;
+  document.getElementById('RHandFeedbackButton').disabled = true;
+  document.getElementById('RightHandTorque').disabled = true;
+  document.getElementById('RightFootTorque').disabled = true;
+  document.getElementById('LeftHandTorque').disabled = true;
+  document.getElementById('LeftFootTorque').disabled = true;
   
   document.getElementById('MultipleButton').disabled = true;
   document.getElementById('MergeButton').disabled = true;
@@ -1018,6 +1084,15 @@ function execute()
   document.getElementById('ReverseButton').disabled = true;
   document.getElementById('CopyButton').disabled = true;
   document.getElementById('CheckSumButton').disabled = true;
+  //////////////////////////////////////////////////////////////////////////////////////////////
+  document.getElementById('LFeedbackButton').disabled = true;
+  document.getElementById('RFeedbackButton').disabled = true;
+  document.getElementById('LHandFeedbackButton').disabled = true;
+  document.getElementById('RHandFeedbackButton').disabled = true;
+  document.getElementById('RightHandTorque').disabled = true;
+  document.getElementById('RightFootTorque').disabled = true;
+  document.getElementById('LeftHandTorque').disabled = true;
+  document.getElementById('LeftFootTorque').disabled = true;
 
   CheckSector(Number(document.getElementById('Sector').value));
 }
@@ -1031,6 +1106,44 @@ function stand()
 
   CheckSector(29);
 }
+
+///////////////////////////////////////////////////////////////////////////////////////////////////
+function Feedback(value)
+{
+  var mode = value;
+  switch (mode){
+    case "LF_Feedback":
+      SendFeedbackPackage.Feedback = 1;
+      break;
+    case "LHTorque":
+      SendFeedbackPackage.Feedback = 2;
+      break;
+    case "LFTorque":
+      SendFeedbackPackage.Feedback = 3;
+      break;
+    case "RHTorque":
+      SendFeedbackPackage.Feedback = 4;
+      break;
+    case "RFTorque":
+      SendFeedbackPackage.Feedback = 5;
+      break;
+    case "LH_Feedback":
+      SendFeedbackPackage.Feedback = 6;
+      break;
+    case "RF_Feedback":
+      SendFeedbackPackage.Feedback = 7;
+      break;
+    case "RH_Feedback":
+      SendFeedbackPackage.Feedback = 8;
+      break;
+  }
+  document.getElementById('label').innerHTML = "truetruetruetrue";
+  FeedbackPackage.publish(SendFeedbackPackage);
+  // document.getElementById('FeedbackButton').disabled = false;
+  // SendFeedbackPackage.askflag = false;
+  console.log(SendFeedbackPackage.Feedback);
+}
+///////////////////////////////////////////////////////////////////////////////////////////////////
 
 
 function resetfunction()
@@ -1051,6 +1164,15 @@ function resetfunction()
   document.getElementById('ReverseButton').disabled = false;
   document.getElementById('CopyButton').disabled = false;
   document.getElementById('CheckSumButton').disabled = false;
+  /////////////////////////////////////////////////////////////////////////////////////////////////////
+  document.getElementById('LFeedbackButton').disabled = false;
+  document.getElementById('RFeedbackButton').disabled = false;
+  document.getElementById('LHandFeedbackButton').disabled = false;
+  document.getElementById('RHandFeedbackButton').disabled = false;
+  document.getElementById('RightHandTorque').disabled = false;
+  document.getElementById('RightFootTorque').disabled = false;
+  document.getElementById('LeftHandTorque').disabled = false;
+  document.getElementById('LeftFootTorque').disabled = false;
 }
 
 function addreduce(value)
