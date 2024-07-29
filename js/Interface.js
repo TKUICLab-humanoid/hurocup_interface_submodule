@@ -394,20 +394,20 @@ function executeDRC(motion)
   if(motion == "motion1")
   {
     CheckSectorDRC(Number(document.getElementById('Sector1').value));
-    console.log("1")
-    sleep(100)
+    console.log("motion1")
+    sleep(5)
   }
   else if(motion == "motion2")
   {
     CheckSectorDRC(Number(document.getElementById('Sector2').value));
-    console.log("2")
-    sleep(100)
+    console.log("motion2")
+    sleep(5)
   }
   else if(motion == "motion3")
   {
     CheckSectorDRC(Number(document.getElementById('Sector3').value));
-    console.log("3")
-    sleep(100)
+    console.log("motion3")
+    sleep(5)
   }
   
 }

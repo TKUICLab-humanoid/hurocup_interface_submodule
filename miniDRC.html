@@ -442,17 +442,35 @@
 		}
 		
 		function ContinuousFun() {
-			document.getElementById("Xvalue").value = 0;
+			Xvaluetmp 	  = 0;
+			Yvaluetmp 	  = 0;
+			Thetavaluetmp = 0;
+			document.getElementById("Xvalue").value = Xvaluetmp;
+			document.getElementById("Yvalue").value = Yvaluetmp;
+			document.getElementById("Thetavalue").value = Thetavaluetmp;
+			ChangeContinuousValueFun();
 			statetype = 1;
 			Load();
 		}
 		function LC_upFun() {
-			document.getElementById("Xvalue").value = 16000;
+			Xvaluetmp 	  = 19000;
+			Yvaluetmp 	  = 0;
+			Thetavaluetmp = 0;
+			document.getElementById("Xvalue").value = Xvaluetmp;
+			document.getElementById("Yvalue").value = Yvaluetmp;
+			document.getElementById("Thetavalue").value = Thetavaluetmp;
+			ChangeContinuousValueFun();
 			statetype = 2;
 			Load();
 		}
 		function LC_downFun() {
-			document.getElementById("Xvalue").value = 16000;
+			Xvaluetmp 	  = 20000;
+			Yvaluetmp 	  = 0;
+			Thetavaluetmp = 0;
+			document.getElementById("Xvalue").value = Xvaluetmp;
+			document.getElementById("Yvalue").value = Yvaluetmp;
+			document.getElementById("Thetavalue").value = Thetavaluetmp;
+			ChangeContinuousValueFun();
 			statetype = 3;
 			Load();
 		}
@@ -927,15 +945,18 @@
 						ChangeContinuousValueFun();
 					}
                     break;
-				case 49:
+				case 90:
                     executeDRC("motion1");
                     break;
-				case 50:
+				case 88:
 					executeDRC("motion2");
                     break;
-				case 51:
+				case 67:
 					executeDRC("motion3");
                     break;
+				case 27:
+					standDRC()
+					break;
 				case 32:	//Space, Generate
 					Generate();
 					break;
@@ -1892,7 +1913,7 @@
 				<input type="button" id="executeButton" value="motion3" onclick="executeDRC(this.value);" style="width:70px; margin-left:69px;">
 				motion3: <input type="text" id="Sector3" value=-1 style="width:40px;">
 				<br>
-				<input type="button" id="executeButton" value="stand" onclick="standDRC();" style="width:50px; margin-left:69px;">
+				<input type="button" id="executeButton" value="stand" onclick="standDRC();" style="width:200px; height: 40px; margin-top: 10px; margin-left:69px;">
                 <br>
 
 				</div>
