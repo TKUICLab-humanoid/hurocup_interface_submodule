@@ -442,35 +442,17 @@
 		}
 		
 		function ContinuousFun() {
-			Xvaluetmp 	  = 0;
-			Yvaluetmp 	  = 0;
-			Thetavaluetmp = 0;
-			document.getElementById("Xvalue").value = Xvaluetmp;
-			document.getElementById("Yvalue").value = Yvaluetmp;
-			document.getElementById("Thetavalue").value = Thetavaluetmp;
-			ChangeContinuousValueFun();
+			document.getElementById("Xvalue").value = 0;
 			statetype = 1;
 			Load();
 		}
 		function LC_upFun() {
-			Xvaluetmp 	  = 19000;
-			Yvaluetmp 	  = 0;
-			Thetavaluetmp = 0;
-			document.getElementById("Xvalue").value = Xvaluetmp;
-			document.getElementById("Yvalue").value = Yvaluetmp;
-			document.getElementById("Thetavalue").value = Thetavaluetmp;
-			ChangeContinuousValueFun();
+			document.getElementById("Xvalue").value = 16000;
 			statetype = 2;
 			Load();
 		}
 		function LC_downFun() {
-			Xvaluetmp 	  = 20000;
-			Yvaluetmp 	  = 0;
-			Thetavaluetmp = 0;
-			document.getElementById("Xvalue").value = Xvaluetmp;
-			document.getElementById("Yvalue").value = Yvaluetmp;
-			document.getElementById("Thetavalue").value = Thetavaluetmp;
-			ChangeContinuousValueFun();
+			document.getElementById("Xvalue").value = 16000;
 			statetype = 3;
 			Load();
 		}
@@ -945,18 +927,15 @@
 						ChangeContinuousValueFun();
 					}
                     break;
-				case 90:
+				case 49:
                     executeDRC("motion1");
                     break;
-				case 88:
+				case 50:
 					executeDRC("motion2");
                     break;
-				case 67:
+				case 51:
 					executeDRC("motion3");
                     break;
-				case 27:
-					standDRC()
-					break;
 				case 32:	//Space, Generate
 					Generate();
 					break;
@@ -1247,7 +1226,7 @@
 		}
 		function changeColorLabel(newValue) {
 			console.log(newValue);
-			HSVreqrest.ColorLabel = Number(newValue);
+			HSVreqrest.ColorLabel = String(newValue);
 			HSVClient.callService(HSVreqrest, function (HSVresult) {
 				document.getElementById("HminRange").value = HSVresult.Hmin;
 				document.getElementById("SminRange").value = HSVresult.Smin;
@@ -1913,7 +1892,7 @@
 				<input type="button" id="executeButton" value="motion3" onclick="executeDRC(this.value);" style="width:70px; margin-left:69px;">
 				motion3: <input type="text" id="Sector3" value=-1 style="width:40px;">
 				<br>
-				<input type="button" id="executeButton" value="stand" onclick="standDRC();" style="width:200px; height: 40px; margin-top: 10px; margin-left:69px;">
+				<input type="button" id="executeButton" value="stand" onclick="standDRC();" style="width:50px; margin-left:69px;">
                 <br>
 
 				</div>

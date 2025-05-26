@@ -2,7 +2,7 @@
 {
     width: 900px;
     height: 800px;
-    float: left; 
+    /* float: left;  */
 }
 .topbox
 {
@@ -18,9 +18,17 @@
     margin-top: 30px; 
     margin-left:40px;
 }
+#rightbox
+{
+    width: 130px;
+    height: 90px; 
+    float: right;
+    margin-top: 30px; 
+    margin-right:40px;
+}
 #MotionTable
 {
-    width: 2100px;
+    width: 1300px;
     float: left;
     height: 20px;
 }
@@ -149,7 +157,7 @@ body{
 
 .smallbox {
     background-color: #333;
-    width: 2100px;
+    width: 1200px;
     height: 22.8px;
     float: left;
     clear: both;
