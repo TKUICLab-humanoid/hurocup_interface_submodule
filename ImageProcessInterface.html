@@ -89,7 +89,7 @@
 			messageType: 'tku_msgs/HSVValue'
 		});
 		var HSVValuecmd = new ROSLIB.Message({
-			hmax: 179,
+			hmax: 180,
 			hmin: 0,
 			smax: 255,
 			smin: 0,
@@ -212,7 +212,7 @@
 		var B_Start_Flag = true;
 
 		var hmin = 0;
-		var hmax = 179;
+		var hmax = 180;
 		var smin = 0;
 		var smax = 255;
 		var bmin = 0;
@@ -294,17 +294,17 @@
 			document.getElementById("hminRange").value = 0;
 			document.getElementById("sminRange").value = 0;
 			document.getElementById("bminRange").value = 0;
-			document.getElementById("hmaxRange").value = 179;
+			document.getElementById("hmaxRange").value = 180;
 			document.getElementById("smaxRange").value = 255;
 			document.getElementById("bmaxRange").value = 255;
 			document.getElementById("hminValue").value = 0;
 			document.getElementById("sminValue").value = 0;
 			document.getElementById("bminValue").value = 0;
-			document.getElementById("hmaxValue").value = 179;
+			document.getElementById("hmaxValue").value = 180;
 			document.getElementById("smaxValue").value = 255;
 			document.getElementById("bmaxValue").value = 255;
 			hmin = 0;
-			hmax = 179;
+			hmax = 180;
 			smin = 0;
 			smax = 255;
 			bmin = 0;
@@ -413,6 +413,11 @@
 			SaveCameraMsg.auto_exposure = Camauto_exposureValue;
 			SaveCamera.publish(SaveCameraMsg);
 		}
+		
+		function changebuild(newValue) {
+			console.log(newValue)
+		}
+
 		function changecolorlabel(newValue) {
 			console.log(newValue);
 			HSVreqrest.colorlabel = String(newValue); // 直接轉換為字串
@@ -993,11 +998,11 @@
 					</tr>
 					<tr>
 						<td rowspan="2"><input type="text" class="ValueText" id="hminValue" size="12" value="0" onchange="rangehminValue(this.value)" /></td>
-						<td><input class="Range" id="hminRange" name="hminRange" type="range" min="0" max="179" value="0" oninput="showhminValue(this.value)" /></td>
-						<td rowspan="2"><input type="text" class="ValueText" id="hmaxValue" size="12" value="179" onchange="rangehmaxValue(this.value)" /></td>
+						<td><input class="Range" id="hminRange" name="hminRange" type="range" min="0" max="180" value="0" oninput="showhminValue(this.value)" /></td>
+						<td rowspan="2"><input type="text" class="ValueText" id="hmaxValue" size="12" value="180" onchange="rangehmaxValue(this.value)" /></td>
 					</tr>
 					<tr>
-						<td><input class="Range" id="hmaxRange" name="hmaxRange" type="range" min="0" max="179" value="179" oninput="showhmaxValue(this.value)" /></td>
+						<td><input class="Range" id="hmaxRange" name="hmaxRange" type="range" min="0" max="180" value="180" oninput="showhmaxValue(this.value)" /></td>
 					</tr>
 					<tr>
 						<td colspan="3">
@@ -1154,7 +1159,7 @@
 								<p class="text">build_select: </p>
 							</td>
 							<td>
-								<select id="build select" onChange="changecolorlabel(this.value)">
+								<select id="build select" onChange="changebuild(this.value)">
 									<option value="All_color_build">All_color_build</option>
 									<option value="Single_color _build">Single_color _build</option>
 								</select>
