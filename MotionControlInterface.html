@@ -150,7 +150,7 @@
                             <td>
                                 <button type="button" style="width:110px ;height:25px;" id="changeAddressButton" onclick="enterAddress()">Enter Address</button>
                             </td>
-                            <td>
+                            <!-- <td>
                                 <select style="height:25px; margin-right: 5px;" id="strategy_location" >
                                     <option value="ar">ar</option>
                                     <option value="bb">bb</option>
@@ -163,7 +163,7 @@
                             </td>
                             <td>
                                 <button type="button" style="width:110px ;height:25px;" id="changelocationButton" onclick="strategylocation()">location_load</button>
-                            </td>
+                            </td> -->
                         </tr>
                     </table>
                 </div>
@@ -212,6 +212,7 @@
                         <div class="checksumsmallbox">M24:</div>
                         <div class="checksumsmallbox">M25:</div>
                         <div class="checksumsmallbox">M26:</div>
+                        <div class="checksumsmallbox">M27:</div>
                     </div>
                 </div>
 
@@ -274,13 +275,12 @@
                         <div class="inthesmallbox" id="headercolumn" align="center">D22</div>
 
                     </div>
-
                     <div class="smallbox" style="margin-top: 2px; width: 2300px; height: 305px; overflow-y: auto; overflow-x: hidden;">
                         <div id="MotionTable"></div>
                     </div>
                 </div>
                 <div class="box" id="RelativePosition" style="display: none; overflow-x: scroll; overflow-y: hidden">
-                    <div class="smallbox" style=" width: 1400px; position: relative;">
+                    <div class="smallbox" style=" width: 1450px; position: relative;">
                         <div class="inthesmallbox2" id="headercolumn2" align="center">ID</div>
                         <div class="inthesmallbox" id="headercolumn" align="center">Name</div>
                         <div class="inthesmallbox" id="headercolumn" align="center">M1</div>
@@ -309,17 +309,15 @@
                         <div class="inthesmallbox" id="headercolumn" align="center">M24</div>
                         <div class="inthesmallbox" id="headercolumn" align="center">M25</div>
                         <div class="inthesmallbox" id="headercolumn" align="center">M26</div>
-
-                        
-
+                        <div class="inthesmallbox" id="headercolumn" align="center">M27</div>
                     </div>
-                    <div class="smallbox" style="margin-top: 2px; width: 1400px;height: 305px; overflow-y: auto; overflow-x: hidden;">
-                        <div id="RelativePositionTable" style="width: 1400px;"></div>
+                    <div class="smallbox" style="margin-top: 2px; width: 1450px;height: 305px; overflow-y: auto; overflow-x: hidden;">
+                        <div id="RelativePositionTable" style="width: 1450px;"></div>
                     </div>
 
                 </div>
                 <div class="box" id="RelativeSpeed" style="display: none; overflow-x: scroll; overflow-y: hidden">
-                    <div class="smallbox" style=" width: 1400px; position: relative;">
+                    <div class="smallbox" style=" width: 1450px; position: relative;">
                         <div class="inthesmallbox2" id="headercolumn2" align="center">ID</div>
                         <div class="inthesmallbox" id="headercolumn" align="center">Name</div>
                         <div class="inthesmallbox" id="headercolumn" align="center">M1</div>
@@ -348,16 +346,14 @@
                         <div class="inthesmallbox" id="headercolumn" align="center">M24</div>
                         <div class="inthesmallbox" id="headercolumn" align="center">M25</div>
                         <div class="inthesmallbox" id="headercolumn" align="center">M26</div>
-
-                        
-
+                        <div class="inthesmallbox" id="headercolumn" align="center">M27</div>
                     </div>
-                    <div class="smallbox" style="margin-top: 2px; width: 1400px;height: 305px; overflow-y: auto; overflow-x: hidden;">
-                        <div id="RelativeSpeedTable" style=" width: 1400px;"></div>
+                    <div class="smallbox" style="margin-top: 2px; width: 1450px;height: 305px; overflow-y: auto; overflow-x: hidden;">
+                        <div id="RelativeSpeedTable" style=" width: 1450px;"></div>
                     </div>
                 </div>
                 <div class="box" id="AbsolutePosition" style="display: none; overflow-x: scroll; overflow-y: hidden">
-                    <div class="smallbox" style=" width: 1400px; position: relative;">
+                    <div class="smallbox" style=" width: 1450px; position: relative;">
                         <div class="inthesmallbox2" id="headercolumn2" align="center">ID</div>
                         <div class="inthesmallbox" id="headercolumn" align="center">Name</div>
                         <div class="inthesmallbox" id="headercolumn" align="center">M1</div>
@@ -386,15 +382,14 @@
                         <div class="inthesmallbox" id="headercolumn" align="center">M24</div>
                         <div class="inthesmallbox" id="headercolumn" align="center">M25</div>
                         <div class="inthesmallbox" id="headercolumn" align="center">M26</div>
-
-
+                        <div class="inthesmallbox" id="headercolumn" align="center">M27</div>
                     </div>
-                    <div class="smallbox" style="margin-top: 2px; width: 1400px;height: 305px; overflow-y: auto; overflow-x: hidden;">
-                        <div id="AbsolutePositionTable" style="width: 1400px;"></div>
+                    <div class="smallbox" style="margin-top: 2px; width: 1450px;height: 305px; overflow-y: auto; overflow-x: hidden;">
+                        <div id="AbsolutePositionTable" style="width: 1450px;"></div>
                     </div>
                 </div>
                 <div class="box" id="AbsoluteSpeed" style="display: none; overflow-x: scroll; overflow-y: hidden">
-                    <div class="smallbox" style=" width: 1400px; position: relative;">
+                    <div class="smallbox" style=" width: 1450px; position: relative;">
                         <div class="inthesmallbox2" id="headercolumn2" align="center">ID</div>
                         <div class="inthesmallbox" id="headercolumn" align="center">Name</div>
                         <div class="inthesmallbox" id="headercolumn" align="center">M1</div>
@@ -423,10 +418,10 @@
                         <div class="inthesmallbox" id="headercolumn" align="center">M24</div>
                         <div class="inthesmallbox" id="headercolumn" align="center">M25</div>
                         <div class="inthesmallbox" id="headercolumn" align="center">M26</div>
-
+                        <div class="inthesmallbox" id="headercolumn" align="center">M27</div>
                     </div>
-                    <div class="smallbox" style="margin-top: 2px; width: 1400px;height: 305px; overflow-y: auto; overflow-x: hidden;">
-                        <div id="AbsoluteSpeedTable" style="width: 1400px;"></div>
+                    <div class="smallbox" style="margin-top: 2px; width: 1450px;height: 305px; overflow-y: auto; overflow-x: hidden;">
+                        <div id="AbsoluteSpeedTable" style="width: 1450px;"></div>
                     </div>
                 </div>
                 
@@ -494,7 +489,7 @@
                     </div>
                 </div>
                 <div class="box" id="RelativePosition" style="display: none; overflow-x: scroll; overflow-y: hidden">
-                    <div class="smallbox" style=" width: 1400px; position: relative;">
+                    <div class="smallbox" style=" width: 1450px; position: relative;">
                         <div class="inthesmallbox2" id="headercolumn2" align="center">ID</div>
                         <div class="inthesmallbox" id="headercolumn" align="center">Name</div>
                         <div class="inthesmallbox" id="headercolumn" align="center">M1</div>
@@ -519,13 +514,13 @@
                         <div class="inthesmallbox" id="headercolumn" align="center">M20</div>
                         <div class="inthesmallbox" id="headercolumn" align="center">M21</div>
                     </div>
-                    <div class="smallbox" style="margin-top: 2px; width: 1400px;height: 305px; overflow-y: auto; overflow-x: hidden;">
-                        <div id="RelativePositionTable" style="width: 1400px;"></div>
+                    <div class="smallbox" style="margin-top: 2px; width: 1450px;height: 305px; overflow-y: auto; overflow-x: hidden;">
+                        <div id="RelativePositionTable" style="width: 1450px;"></div>
                     </div>
 
                 </div>
                 <div class="box" id="RelativeSpeed" style="display: none; overflow-x: scroll; overflow-y: hidden">
-                    <div class="smallbox" style=" width: 1400px; position: relative;">
+                    <div class="smallbox" style=" width: 1450px; position: relative;">
                         <div class="inthesmallbox2" id="headercolumn2" align="center">ID</div>
                         <div class="inthesmallbox" id="headercolumn" align="center">Name</div>
                         <div class="inthesmallbox" id="headercolumn" align="center">M1</div>
@@ -550,12 +545,12 @@
                         <div class="inthesmallbox" id="headercolumn" align="center">M20</div>
                         <div class="inthesmallbox" id="headercolumn" align="center">M21</div>
                     </div>
-                    <div class="smallbox" style="margin-top: 2px; width: 1400px;height: 305px; overflow-y: auto; overflow-x: hidden;">
-                        <div id="RelativeSpeedTable" style=" width: 1400px;"></div>
+                    <div class="smallbox" style="margin-top: 2px; width: 1450px;height: 305px; overflow-y: auto; overflow-x: hidden;">
+                        <div id="RelativeSpeedTable" style=" width: 1450px;"></div>
                     </div>
                 </div>
                 <div class="box" id="AbsolutePosition" style="display: none; overflow-x: scroll; overflow-y: hidden">
-                    <div class="smallbox" style=" width: 1400px; position: relative;">
+                    <div class="smallbox" style=" width: 1450px; position: relative;">
                         <div class="inthesmallbox2" id="headercolumn2" align="center">ID</div>
                         <div class="inthesmallbox" id="headercolumn" align="center">Name</div>
                         <div class="inthesmallbox" id="headercolumn" align="center">M1</div>
@@ -580,12 +575,12 @@
                         <div class="inthesmallbox" id="headercolumn" align="center">M20</div>
                         <div class="inthesmallbox" id="headercolumn" align="center">M21</div>
                     </div>
-                    <div class="smallbox" style="margin-top: 2px; width: 1400px;height: 305px; overflow-y: auto; overflow-x: hidden;">
-                        <div id="AbsolutePositionTable" style="width: 1400px;"></div>
+                    <div class="smallbox" style="margin-top: 2px; width: 1450px;height: 305px; overflow-y: auto; overflow-x: hidden;">
+                        <div id="AbsolutePositionTable" style="width: 1450px;"></div>
                     </div>
                 </div>
                 <div class="box" id="AbsoluteSpeed" style="display: none; overflow-x: scroll; overflow-y: hidden">
-                    <div class="smallbox" style=" width: 1400px; position: relative;">
+                    <div class="smallbox" style=" width: 1450px; position: relative;">
                         <div class="inthesmallbox2" id="headercolumn2" align="center">ID</div>
                         <div class="inthesmallbox" id="headercolumn" align="center">Name</div>
                         <div class="inthesmallbox" id="headercolumn" align="center">M1</div>
@@ -610,8 +605,8 @@
                         <div class="inthesmallbox" id="headercolumn" align="center">M20</div>
                         <div class="inthesmallbox" id="headercolumn" align="center">M21</div>
                     </div>
-                    <div class="smallbox" style="margin-top: 2px; width: 1400px;height: 305px; overflow-y: auto; overflow-x: hidden;">
-                        <div id="AbsoluteSpeedTable" style="width: 1400px;"></div>
+                    <div class="smallbox" style="margin-top: 2px; width: 1450px;height: 305px; overflow-y: auto; overflow-x: hidden;">
+                        <div id="AbsoluteSpeedTable" style="width: 1450px;"></div>
                     </div>
                 </div>
                 

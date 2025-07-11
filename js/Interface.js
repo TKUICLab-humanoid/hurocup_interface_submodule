@@ -59,7 +59,9 @@ var interface = new ROSLIB.Topic({
 });
 var SendPackage = new ROSLIB.Message({
   package: 0,
-  sectorname: ""
+  sectorname: "",
+  delay: [],
+  cnt: 0
 });
 
 
@@ -213,7 +215,7 @@ var location_msg = new ROSLIB.Message({
 
 function strategylocation() {
   // 获取选定的值
-  location_msg.data = "/home/iclab/Desktop/humanoid/src/wula/wula/"+ document.getElementById('strategy_location').value + "/Parameter";
+  location_msg.data = "/home/iclab/Desktop/towen/src/strategy/strategy/"+ document.getElementById('strategy_location').value + "/Parameter";
   console.log(`Selected strategy location: ${location_msg.data}`);
   location_strategy.publish(location_msg);
 
@@ -399,7 +401,6 @@ function executeDRC(motion)
 
 function CheckSector(sectordata)
 {
-  console.log("bbbbbbbbbbbbbbbbbb");
   var LoadParameterClient = new ROSLIB.Service({
     ros : ros,
     name : '/package/InterfaceCheckSector',
@@ -503,60 +504,150 @@ function CheckSector(sectordata)
 
 function Save()
 {
-  SaveMotionData.savestate = 0;
-  SaveMotionData.name = document.getElementById('filename').value;
-  for(var i = 0;i < document.getElementById('MotionTable').getElementsByTagName('div').length;i+=2)
-  {
-    SaveMotionData.motionstate = 0;
-    SaveMotionData.id = Number(document.getElementById('MotionTable').getElementsByTagName('div')[i].getElementsByClassName('textbox')[0].value);
-    for(var j = 0; j < 40; j++)
-    {
-      SaveMotionData.motionlist[j] = Number(document.getElementById('MotionTable').getElementsByTagName('div')[i+1].getElementsByClassName('textbox')[j+1].value);
-    }
-    InterfaceSaveMotionData.publish(SaveMotionData);
+    // 1. 取得檔名，若空則預設 'untitled'
+  const fileNameInput = document.getElementById('filename').value.trim();
+  const fileName = fileNameInput !== '' ? fileNameInput : 'untitled';
+
+  // 快速取得各組 DIV list
+  const motionDivs    = document.getElementById('MotionTable'           ).getElementsByTagName('div');
+  const relPosDivs    = document.getElementById('RelativePositionTable').getElementsByTagName('div');
+  const relSpdDivs    = document.getElementById('RelativeSpeedTable'   ).getElementsByTagName('div');
+  const absPosDivs    = document.getElementById('AbsolutePositionTable').getElementsByTagName('div');
+  const absSpdDivs    = document.getElementById('AbsoluteSpeedTable'   ).getElementsByTagName('div');
+
+  // Helper：建立一個乾淨的 Message 物件
+  function makeMsg({ saveflag=false, savestate=0, motionstate=0, id=0 }) {
+    return new ROSLIB.Message({
+      name:        fileName,
+      savestate:   savestate,
+      saveflag:    saveflag,
+      motionstate: motionstate,
+      id:          id,
+      motionlist:  [],   // int16[]
+      motordata:   []    // int16[]
+    });
   }
 
-  for(var i = 0;i < document.getElementById('RelativePositionTable').getElementsByTagName('div').length;i+=2)
-  {
-    SaveMotionData.motionstate = 1;
-    SaveMotionData.id = Number(document.getElementById('RelativePositionTable').getElementsByTagName('div')[i].getElementsByClassName('textbox')[0].value);
-    for(var j = 0; j < 26; j++)
-    {
-      SaveMotionData.motordata[j] = Number(document.getElementById('RelativePositionTable').getElementsByTagName('div')[i+1].getElementsByClassName('textbox')[j+1].value);
-    }
+  // 2. MotionTable：state=0, length=40
+  for (let i = 0; i < motionDivs.length; i += 2) {
+    const id = Number(motionDivs[i].getElementsByClassName('textbox')[0].value) || 0;
+    const msg = makeMsg({ savestate: 0, motionstate: 0, id: id });
 
-    InterfaceSaveMotionData.publish(SaveMotionData);
-    SaveMotionData.motionstate = 2;
-    SaveMotionData.id = Number(document.getElementById('RelativeSpeedTable').getElementsByTagName('div')[i].getElementsByClassName('textbox')[0].value);
-    for(var j = 0; j < 26; j++)
-    {
-      SaveMotionData.motordata[j] = Number(document.getElementById('RelativeSpeedTable').getElementsByTagName('div')[i+1].getElementsByClassName('textbox')[j+1].value);
+    const cells = motionDivs[i+1].getElementsByClassName('textbox');
+    for (let j = 1; j <= 40; j++) {
+      const v = Number(cells[j].value);
+      msg.motionlist.push(isNaN(v) ? 0 : v);
     }
-    InterfaceSaveMotionData.publish(SaveMotionData);
+    InterfaceSaveMotionData.publish(msg);
   }
-  
-  for(var i = 0;i < document.getElementById('AbsolutePositionTable').getElementsByTagName('div').length;i+=2)
-  {
-    SaveMotionData.motionstate = 3;
-    SaveMotionData.id = Number(document.getElementById('AbsolutePositionTable').getElementsByTagName('div')[i].getElementsByClassName('textbox')[0].value);
-    for(var j = 0; j < 26; j++)
-    {
-      SaveMotionData.motordata[j] = Number(document.getElementById('AbsolutePositionTable').getElementsByTagName('div')[i+1].getElementsByClassName('textbox')[j+1].value);
+
+  // 3. Relative：pos state=1, spd state=2, length=27
+  for (let i = 0; i < relPosDivs.length; i += 2) {
+    // position
+    const idPos = Number(relPosDivs[i].getElementsByClassName('textbox')[0].value) || 0;
+    const msgPos = makeMsg({ savestate: 0, motionstate: 1, id: idPos });
+    const posCells = relPosDivs[i+1].getElementsByClassName('textbox');
+    for (let j = 1; j <= 27; j++) {
+      const v = Number(posCells[j].value);
+      msgPos.motordata.push(isNaN(v) ? 0 : v);
     }
-    InterfaceSaveMotionData.publish(SaveMotionData);
-    SaveMotionData.motionstate = 4;
-    SaveMotionData.id = Number(document.getElementById('AbsoluteSpeedTable').getElementsByTagName('div')[i].getElementsByClassName('textbox')[0].value);
-    for(var j = 0; j < 26; j++)
-    {
-      SaveMotionData.motordata[j] = Number(document.getElementById('AbsoluteSpeedTable').getElementsByTagName('div')[i+1].getElementsByClassName('textbox')[j+1].value);
+    InterfaceSaveMotionData.publish(msgPos);
+
+    // speed
+    const idSpd = Number(relSpdDivs[i].getElementsByClassName('textbox')[0].value) || 0;
+    const msgSpd = makeMsg({ savestate: 0, motionstate: 2, id: idSpd });
+    const spdCells = relSpdDivs[i+1].getElementsByClassName('textbox');
+    for (let j = 1; j <= 27; j++) {
+      const v = Number(spdCells[j].value);
+      msgSpd.motordata.push(isNaN(v) ? 0 : v);
     }
-    InterfaceSaveMotionData.publish(SaveMotionData);
+    InterfaceSaveMotionData.publish(msgSpd);
   }
-  SaveMotionData.saveflag = true;
-  InterfaceSaveMotionData.publish(SaveMotionData);
-  SaveMotionData.saveflag = false;
+
+  // 4. Absolute：pos state=3, spd state=4, length=27
+  for (let i = 0; i < absPosDivs.length; i += 2) {
+    // position
+    const idPosA = Number(absPosDivs[i].getElementsByClassName('textbox')[0].value) || 0;
+    const msgPosA = makeMsg({ savestate: 0, motionstate: 3, id: idPosA });
+    const posACells = absPosDivs[i+1].getElementsByClassName('textbox');
+    for (let j = 1; j <= 27; j++) {
+      const v = Number(posACells[j].value);
+      msgPosA.motordata.push(isNaN(v) ? 0 : v);
+    }
+    InterfaceSaveMotionData.publish(msgPosA);
+
+    // speed
+    const idSpdA = Number(absSpdDivs[i].getElementsByClassName('textbox')[0].value) || 0;
+    const msgSpdA = makeMsg({ savestate: 0, motionstate: 4, id: idSpdA });
+    const spdACells = absSpdDivs[i+1].getElementsByClassName('textbox');
+    for (let j = 1; j <= 27; j++) {
+      const v = Number(spdACells[j].value);
+      msgSpdA.motordata.push(isNaN(v) ? 0 : v);
+    }
+    InterfaceSaveMotionData.publish(msgSpdA);
+  }
+
+  // 5. 最後一筆：帶 saveflag=true，觸發後端寫檔
+  const doneMsg = makeMsg({ saveflag: true, savestate: 0, motionstate: 0, id: 0 });
+  InterfaceSaveMotionData.publish(doneMsg);
+
+  // 6. UI 回饋
   document.getElementById('label').innerHTML = "Save file is successful !!";
 }
+//   SaveMotionData.savestate = 0;
+//   SaveMotionData.name = document.getElementById('filename').value;
+//   for(var i = 0;i < document.getElementById('MotionTable').getElementsByTagName('div').length;i+=2)
+//   {
+//     SaveMotionData.motionstate = 0;
+//     SaveMotionData.id = Number(document.getElementById('MotionTable').getElementsByTagName('div')[i].getElementsByClassName('textbox')[0].value);
+//     for(var j = 0; j < 40; j++)
+//     {
+//       SaveMotionData.motionlist[j] = Number(document.getElementById('MotionTable').getElementsByTagName('div')[i+1].getElementsByClassName('textbox')[j+1].value);
+//     }
+//     InterfaceSaveMotionData.publish(SaveMotionData);
+//   }
+
+//   for(var i = 0;i < document.getElementById('RelativePositionTable').getElementsByTagName('div').length;i+=2)
+//   {
+//     SaveMotionData.motionstate = 1;
+//     SaveMotionData.id = Number(document.getElementById('RelativePositionTable').getElementsByTagName('div')[i].getElementsByClassName('textbox')[0].value);
+//     for(var j = 0; j < 27; j++)
+//     {
+//       SaveMotionData.motordata[j] = Number(document.getElementById('RelativePositionTable').getElementsByTagName('div')[i+1].getElementsByClassName('textbox')[j+1].value);
+//     }
+
+//     InterfaceSaveMotionData.publish(SaveMotionData);
+//     SaveMotionData.motionstate = 2;
+//     SaveMotionData.id = Number(document.getElementById('RelativeSpeedTable').getElementsByTagName('div')[i].getElementsByClassName('textbox')[0].value);
+//     for(var j = 0; j < 27; j++)
+//     {
+//       SaveMotionData.motordata[j] = Number(document.getElementById('RelativeSpeedTable').getElementsByTagName('div')[i+1].getElementsByClassName('textbox')[j+1].value);
+//     }
+//     InterfaceSaveMotionData.publish(SaveMotionData);
+//   }
+  
+//   for(var i = 0;i < document.getElementById('AbsolutePositionTable').getElementsByTagName('div').length;i+=2)
+//   {
+//     SaveMotionData.motionstate = 3;
+//     SaveMotionData.id = Number(document.getElementById('AbsolutePositionTable').getElementsByTagName('div')[i].getElementsByClassName('textbox')[0].value);
+//     for(var j = 0; j < 27; j++)
+//     {
+//       SaveMotionData.motordata[j] = Number(document.getElementById('AbsolutePositionTable').getElementsByTagName('div')[i+1].getElementsByClassName('textbox')[j+1].value);
+//     }
+//     InterfaceSaveMotionData.publish(SaveMotionData);
+//     SaveMotionData.motionstate = 4;
+//     SaveMotionData.id = Number(document.getElementById('AbsoluteSpeedTable').getElementsByTagName('div')[i].getElementsByClassName('textbox')[0].value);
+//     for(var j = 0; j < 27; j++)
+//     {
+//       SaveMotionData.motordata[j] = Number(document.getElementById('AbsoluteSpeedTable').getElementsByTagName('div')[i+1].getElementsByClassName('textbox')[j+1].value);
+//     }
+//     InterfaceSaveMotionData.publish(SaveMotionData);
+//   }
+//   SaveMotionData.saveflag = true;
+//   InterfaceSaveMotionData.publish(SaveMotionData);
+//   SaveMotionData.saveflag = false;
+//   document.getElementById('label').innerHTML = "Save file is successful !!";
+// }
 
 function Read()
 {
@@ -594,36 +685,36 @@ function Read()
         case 1:
           NewRelativePosition();
           document.getElementById('RelativePositionTable').getElementsByTagName('div')[relativepositioncnt*2].getElementsByClassName('textbox')[0].value = MotionData.id[i];
-          for(var j = 0; j < 26; j++)
+          for(var j = 0; j < 27; j++)
           {
-            document.getElementById('RelativePositionTable').getElementsByTagName('div')[relativepositioncnt*2+1].getElementsByClassName('textbox')[j+1].value = MotionData.relativedata[relativepositioncnt*26+relativespeedcnt*26+j];
+            document.getElementById('RelativePositionTable').getElementsByTagName('div')[relativepositioncnt*2+1].getElementsByClassName('textbox')[j+1].value = MotionData.relativedata[relativepositioncnt*27+relativespeedcnt*27+j];
           }
           relativepositioncnt++;
           break;
         case 2:
           NewRelativeSpeed();
           document.getElementById('RelativeSpeedTable').getElementsByTagName('div')[relativespeedcnt*2].getElementsByClassName('textbox')[0].value = MotionData.id[i];
-          for(var j = 0; j < 26; j++)
+          for(var j = 0; j < 27; j++)
           {
-            document.getElementById('RelativeSpeedTable').getElementsByTagName('div')[relativespeedcnt*2+1].getElementsByClassName('textbox')[j+1].value = MotionData.relativedata[relativepositioncnt*26+relativespeedcnt*26+j];
+            document.getElementById('RelativeSpeedTable').getElementsByTagName('div')[relativespeedcnt*2+1].getElementsByClassName('textbox')[j+1].value = MotionData.relativedata[relativepositioncnt*27+relativespeedcnt*27+j];
           }
           relativespeedcnt++;
           break;
         case 3:
           NewAbsolutePosition();
           document.getElementById('AbsolutePositionTable').getElementsByTagName('div')[absolutepositioncnt*2].getElementsByClassName('textbox')[0].value = MotionData.id[i];
-          for(var j = 0; j < 26; j++)
+          for(var j = 0; j < 27; j++)
           {
-            document.getElementById('AbsolutePositionTable').getElementsByTagName('div')[absolutepositioncnt*2+1].getElementsByClassName('textbox')[j+1].value = MotionData.absolutedata[absolutepositioncnt*26+absolutespeedcnt*26+j];
+            document.getElementById('AbsolutePositionTable').getElementsByTagName('div')[absolutepositioncnt*2+1].getElementsByClassName('textbox')[j+1].value = MotionData.absolutedata[absolutepositioncnt*27+absolutespeedcnt*27+j];
           }
           absolutepositioncnt++;
           break;
         case 4:
           NewAbsoluteSpeed();
           document.getElementById('AbsoluteSpeedTable').getElementsByTagName('div')[absolutespeedcnt*2].getElementsByClassName('textbox')[0].value = MotionData.id[i];
-          for(var j = 0; j < 26; j++)
+          for(var j = 0; j < 27; j++)
           {
-            document.getElementById('AbsoluteSpeedTable').getElementsByTagName('div')[absolutespeedcnt*2+1].getElementsByClassName('textbox')[j+1].value = MotionData.absolutedata[absolutepositioncnt*26+absolutespeedcnt*26+j];
+            document.getElementById('AbsoluteSpeedTable').getElementsByTagName('div')[absolutespeedcnt*2+1].getElementsByClassName('textbox')[j+1].value = MotionData.absolutedata[absolutepositioncnt*27+absolutespeedcnt*27+j];
           }
           absolutespeedcnt++;
           break;
@@ -652,14 +743,14 @@ function Read()
 //   {
 //     SaveMotionData.motionstate = 1;
 //     SaveMotionData.id = Number(document.getElementById('RelativePositionTable').getElementsByTagName('div')[i].getElementsByClassName('textbox')[0].value);
-//     for(var j = 0; j < 26; j++)
+//     for(var j = 0; j < 27; j++)
 //     {
 //       SaveMotionData.motordata[j] = Number(document.getElementById('RelativePositionTable').getElementsByTagName('div')[i+1].getElementsByClassName('textbox')[j+1].value);
 //     }
 //     InterfaceSaveMotionData.publish(SaveMotionData);
 //     SaveMotionData.motionstate = 2;
 //     SaveMotionData.id = Number(document.getElementById('RelativeSpeedTable').getElementsByTagName('div')[i].getElementsByClassName('textbox')[0].value);
-//     for(var j = 0; j < 26; j++)
+//     for(var j = 0; j < 27; j++)
 //     {
 //       SaveMotionData.motordata[j] = Number(document.getElementById('RelativeSpeedTable').getElementsByTagName('div')[i+1].getElementsByClassName('textbox')[j+1].value);
 //     }
@@ -670,14 +761,14 @@ function Read()
 //   {
 //     SaveMotionData.motionstate = 3;
 //     SaveMotionData.id = Number(document.getElementById('AbsolutePositionTable').getElementsByTagName('div')[i].getElementsByClassName('textbox')[0].value);
-//     for(var j = 0; j < 26; j++)
+//     for(var j = 0; j < 27; j++)
 //     {
 //       SaveMotionData.motordata[j] = Number(document.getElementById('AbsolutePositionTable').getElementsByTagName('div')[i+1].getElementsByClassName('textbox')[j+1].value);
 //     }
 //     InterfaceSaveMotionData.publish(SaveMotionData);
 //     SaveMotionData.motionstate = 4;
 //     SaveMotionData.id = Number(document.getElementById('AbsoluteSpeedTable').getElementsByTagName('div')[i].getElementsByClassName('textbox')[0].value);
-//     for(var j = 0; j < 26; j++)
+//     for(var j = 0; j < 27; j++)
 //     {
 //       SaveMotionData.motordata[j] = Number(document.getElementById('AbsoluteSpeedTable').getElementsByTagName('div')[i+1].getElementsByClassName('textbox')[j+1].value);
 //     }
@@ -727,13 +818,13 @@ function SaveStand() {
     InterfaceSaveMotionData.publish(msg);
   }
 
-  // 3. Relative：pos state=1, spd state=2, length=26
+  // 3. Relative：pos state=1, spd state=2, length=27
   for (let i = 0; i < relPosDivs.length; i += 2) {
     // position
     const idPos = Number(relPosDivs[i].getElementsByClassName('textbox')[0].value) || 0;
     const msgPos = makeMsg({ savestate: 1, motionstate: 1, id: idPos });
     const posCells = relPosDivs[i+1].getElementsByClassName('textbox');
-    for (let j = 1; j <= 26; j++) {
+    for (let j = 1; j <= 27; j++) {
       const v = Number(posCells[j].value);
       msgPos.motordata.push(isNaN(v) ? 0 : v);
     }
@@ -743,20 +834,20 @@ function SaveStand() {
     const idSpd = Number(relSpdDivs[i].getElementsByClassName('textbox')[0].value) || 0;
     const msgSpd = makeMsg({ savestate: 1, motionstate: 2, id: idSpd });
     const spdCells = relSpdDivs[i+1].getElementsByClassName('textbox');
-    for (let j = 1; j <= 26; j++) {
+    for (let j = 1; j <= 27; j++) {
       const v = Number(spdCells[j].value);
       msgSpd.motordata.push(isNaN(v) ? 0 : v);
     }
     InterfaceSaveMotionData.publish(msgSpd);
   }
 
-  // 4. Absolute：pos state=3, spd state=4, length=26
+  // 4. Absolute：pos state=3, spd state=4, length=27
   for (let i = 0; i < absPosDivs.length; i += 2) {
     // position
     const idPosA = Number(absPosDivs[i].getElementsByClassName('textbox')[0].value) || 0;
     const msgPosA = makeMsg({ savestate: 1, motionstate: 3, id: idPosA });
     const posACells = absPosDivs[i+1].getElementsByClassName('textbox');
-    for (let j = 1; j <= 26; j++) {
+    for (let j = 1; j <= 27; j++) {
       const v = Number(posACells[j].value);
       msgPosA.motordata.push(isNaN(v) ? 0 : v);
     }
@@ -766,7 +857,7 @@ function SaveStand() {
     const idSpdA = Number(absSpdDivs[i].getElementsByClassName('textbox')[0].value) || 0;
     const msgSpdA = makeMsg({ savestate: 1, motionstate: 4, id: idSpdA });
     const spdACells = absSpdDivs[i+1].getElementsByClassName('textbox');
-    for (let j = 1; j <= 26; j++) {
+    for (let j = 1; j <= 27; j++) {
       const v = Number(spdACells[j].value);
       msgSpdA.motordata.push(isNaN(v) ? 0 : v);
     }
@@ -839,9 +930,9 @@ function ReadStand()
             
             console.log(MotionData.id[i]);
             document.getElementById('RelativePositionTable').getElementsByTagName('div')[relativepositioncnt*2].getElementsByClassName('textbox')[0].value = MotionData.id[i];
-            for(var j = 0; j < 26; j++)
+            for(var j = 0; j < 27; j++)
             {
-              document.getElementById('RelativePositionTable').getElementsByTagName('div')[relativepositioncnt*2+1].getElementsByClassName('textbox')[j+1].value = MotionData.relativedata[relativepositioncnt*26+relativespeedcnt*26+j];
+              document.getElementById('RelativePositionTable').getElementsByTagName('div')[relativepositioncnt*2+1].getElementsByClassName('textbox')[j+1].value = MotionData.relativedata[relativepositioncnt*27+relativespeedcnt*27+j];
             }
             console.log(MotionData.relativedata)
             relativepositioncnt++;
@@ -850,9 +941,9 @@ function ReadStand()
             NewRelativeSpeed(); 
             console.log(MotionData.id[i]);
             document.getElementById('RelativeSpeedTable').getElementsByTagName('div')[relativespeedcnt*2].getElementsByClassName('textbox')[0].value = MotionData.id[i];
-            for(var j = 0; j < 26; j++)
+            for(var j = 0; j < 27; j++)
             {
-              document.getElementById('RelativeSpeedTable').getElementsByTagName('div')[relativespeedcnt*2+1].getElementsByClassName('textbox')[j+1].value = MotionData.relativedata[relativepositioncnt*26+relativespeedcnt*26+j];
+              document.getElementById('RelativeSpeedTable').getElementsByTagName('div')[relativespeedcnt*2+1].getElementsByClassName('textbox')[j+1].value = MotionData.relativedata[relativepositioncnt*27+relativespeedcnt*27+j];
             }
             console.log(MotionData.relativedata)
             relativespeedcnt++;
@@ -861,9 +952,9 @@ function ReadStand()
             NewAbsolutePosition();
             console.log(MotionData.id[i]);
             document.getElementById('AbsolutePositionTable').getElementsByTagName('div')[absolutepositioncnt*2].getElementsByClassName('textbox')[0].value = MotionData.id[i];
-            for(var j = 0; j < 26; j++)
+            for(var j = 0; j < 27; j++)
             {
-              document.getElementById('AbsolutePositionTable').getElementsByTagName('div')[absolutepositioncnt*2+1].getElementsByClassName('textbox')[j+1].value = MotionData.absolutedata[absolutepositioncnt*26+absolutespeedcnt*26+j];
+              document.getElementById('AbsolutePositionTable').getElementsByTagName('div')[absolutepositioncnt*2+1].getElementsByClassName('textbox')[j+1].value = MotionData.absolutedata[absolutepositioncnt*27+absolutespeedcnt*27+j];
             }
             absolutepositioncnt++;
             break;
@@ -871,9 +962,9 @@ function ReadStand()
             NewAbsoluteSpeed();
             console.log(MotionData.id[i]);
             document.getElementById('AbsoluteSpeedTable').getElementsByTagName('div')[absolutespeedcnt*2].getElementsByClassName('textbox')[0].value = MotionData.id[i];
-            for(var j = 0; j < 26; j++)
+            for(var j = 0; j < 27; j++)
             {
-              document.getElementById('AbsoluteSpeedTable').getElementsByTagName('div')[absolutespeedcnt*2+1].getElementsByClassName('textbox')[j+1].value = MotionData.absolutedata[absolutepositioncnt*26+absolutespeedcnt*26+j];
+              document.getElementById('AbsoluteSpeedTable').getElementsByTagName('div')[absolutespeedcnt*2+1].getElementsByClassName('textbox')[j+1].value = MotionData.absolutedata[absolutepositioncnt*27+absolutespeedcnt*27+j];
             }
             absolutespeedcnt++;
             break;
@@ -906,6 +997,7 @@ function Send()
   var ID = Number(document.getElementById('SendID').value);
   var Sector = Number(document.getElementById('Sector').value);
   var count = 0;
+  // 假設 ID 是你要送的大動作 opcode（244）
   SendPackage.sectorname = document.getElementById('Sector').value;
   MotionList[count++] = 83;
   MotionList[count++] = 84;
@@ -934,8 +1026,8 @@ function Send()
         const opcode = document.getElementById('Lockedstand').checked ? 242 : 241;
         MotionList.push(opcode);
 
-        // 讀 26 顆馬達的速度和位置
-        for (let j = 0; j < 26; j++) {
+        // 讀 27 顆馬達的速度和位置
+        for (let j = 0; j < 27; j++) {
           const speed = Number(
             document.getElementById('AbsoluteSpeedTable')
                     .getElementsByTagName('div')[i + 1]
@@ -984,8 +1076,8 @@ function Send()
         // opcode 固定 243
         MotionList.push(243);
 
-        // 26 顆馬達的 speed + pos
-        for (let j = 0; j < 26; j++) {
+        // 27 顆馬達的 speed + pos
+        for (let j = 0; j < 27; j++) {
           const speed = Number(
             document.getElementById('RelativeSpeedTable')
                     .getElementsByTagName('div')[i + 1]
@@ -1015,142 +1107,170 @@ function Send()
         break;
       }
     }
-    // for (var i = 0; i < document.getElementById('RelativePositionTable').getElementsByTagName('div').length; i++) 
-    // {
-    //   if (ID == document.getElementById('RelativePositionTable').getElementsByTagName('div')[i].getElementsByClassName('textbox')[0].value) 
-    //   {
-    //     MotionList[count++] = 243;
-    //     for (var j = 0; j < 26; j++) 
-    //     {
-    //       MotionList[count] = (Number(document.getElementById('RelativeSpeedTable').getElementsByTagName('div')[i + 1].getElementsByClassName('textbox')[j + 1].value)) & 0xff;
-    //       checksum += MotionList[count];
-    //       count++;
-    //       MotionList[count] = (((Number(document.getElementById('RelativeSpeedTable').getElementsByTagName('div')[i + 1].getElementsByClassName('textbox')[j + 1].value)) >> 8) & 0xff);
-    //       checksum += MotionList[count];
-    //       count++;
-    //       if (Number(document.getElementById('RelativePositionTable').getElementsByTagName('div')[i + 1].getElementsByClassName('textbox')[j + 1].value) >= 0) 
-    //       {
-    //         MotionList[count] = (Number(document.getElementById('RelativePositionTable').getElementsByTagName('div')[i + 1].getElementsByClassName('textbox')[j + 1].value)) & 0xff;
-    //         checksum += MotionList[count];
-    //         count++;
-    //         MotionList[count] = (((Number(document.getElementById('RelativePositionTable').getElementsByTagName('div')[i + 1].getElementsByClassName('textbox')[j + 1].value)) >> 8) & 0xff);
-    //         checksum += MotionList[count];
-    //         count++;
-    //       }
-    //       else if (Number(document.getElementById('RelativePositionTable').getElementsByTagName('div')[i + 1].getElementsByClassName('textbox')[j + 1].value) < 0) 
-    //       {
-    //         var x = ~(Number(document.getElementById('RelativePositionTable').getElementsByTagName('div')[i + 1].getElementsByClassName('textbox')[j + 1].value)) + 1;
-    //         MotionList[count] = x & 0xff;
-    //         checksum += MotionList[count];
-    //         count++;
-    //         MotionList[count] = ((x >> 8) & 0xff) | 0x80;
-    //         checksum += MotionList[count];
-    //         count++;
-    //       }
-    //       if (j < 4) 
-    //       {
-    //         checksum_Lhand = checksum;
-    //       }
-    //       else if (j < 8) 
-    //       {
-    //         checksum_Rhand = checksum - checksum_Lhand;
-    //       }
-    //       else if (j < 15) 
-    //       {
-    //         checksum_Lfoot = checksum - checksum_Lhand - checksum_Rhand;
+    const table    = document.getElementById('MotionTable');
+    const rows     = table.getElementsByTagName('div');
 
-    //       }
-    //       else 
-    //       {
-    //         checksum_Rfoot = checksum - checksum_Lhand - checksum_Rhand - checksum_Lfoot;
-    //       }
-    //     }
-    //     MotionList[count++] = checksum_Lhand & 0xff;
-    //     MotionList[count++] = checksum_Rhand & 0xff;
-    //     MotionList[count++] = checksum_Lfoot & 0xff;
-    //     MotionList[count++] = checksum_Rfoot & 0xff;
-    //     MotionList[count++] = count - 7;
-    //     MotionList[count++] = 78;
-    //     MotionList[count] = 69;
-		//     console.log("243 publish start");
-		//     console.log(MotionList.length);
-    //     for (var a = 0; a < MotionList.length; a++) 
-    //     {
-    //       SendPackage.package = MotionList[a];
-    //       interface.publish(SendPackage);
-    //       console.log(SendPackage.package);
-    //       sleep(2);
-    //     }
-		//     console.log("243 publish end");
-    //     break;
-    //   }   
-    // }
+    // 按行对遍历：偶数 i=0,2,4... 存放 ID；行 i+1 存放 40 个值
+    for (let i = 0; i < rows.length - 1; i += 2) {
+      const idBox = rows[i].getElementsByClassName('textbox')[0];
+      if (Number(idBox.value) !== ID) continue;
 
-    for (var i = 0; i < document.getElementById('MotionTable').getElementsByTagName('div').length; i++) 
-    {
-      if (ID == document.getElementById('MotionTable').getElementsByTagName('div')[i].getElementsByClassName('textbox')[0].value) 
-      {
-        MotionList[count++] = 244;
-        for (var j = 1; j <= 20; j++) 
-        {
-          if (Number(document.getElementById('MotionTable').getElementsByTagName('div')[i+1].getElementsByClassName('textbox')[j*2 - 1].value)) 
-          {
-            for (var l = 0; l < document.getElementById('RelativePositionTable').getElementsByTagName('div').length; l++) 
-            {
-              if (Number(document.getElementById('MotionTable').getElementsByTagName('div')[i+1].getElementsByClassName('textbox')[j*2 -1].value) == Number(document.getElementById('RelativePositionTable').getElementsByTagName('div')[l].getElementsByClassName('textbox')[0].value)) 
-              {
-                for (var k = 0; k < 26; k++) 
-                {
-                  MotionList[count++] = (Number(document.getElementById('RelativeSpeedTable').getElementsByTagName('div')[l + 1].getElementsByClassName('textbox')[k + 1].value)) & 0xff;
-                  MotionList[count++] = (((Number(document.getElementById('RelativeSpeedTable').getElementsByTagName('div')[l + 1].getElementsByClassName('textbox')[k + 1].value)) >> 8) & 0xff);
-                  if (Number(document.getElementById('RelativePositionTable').getElementsByTagName('div')[l + 1].getElementsByClassName('textbox')[k + 1].value) >= 0) 
-                  {
-                    MotionList[count++] = (Number(document.getElementById('RelativePositionTable').getElementsByTagName('div')[l + 1].getElementsByClassName('textbox')[k + 1].value)) & 0xff;
-                    MotionList[count++] = (((Number(document.getElementById('RelativePositionTable').getElementsByTagName('div')[l + 1].getElementsByClassName('textbox')[k + 1].value)) >> 8) & 0xff);
-                  }
-                  else if (Number(document.getElementById('RelativePositionTable').getElementsByTagName('div')[l + 1].getElementsByClassName('textbox')[k + 1].value) < 0) 
-                  {
-                    var x = ~(Number(document.getElementById('RelativePositionTable').getElementsByTagName('div')[l + 1].getElementsByClassName('textbox')[k + 1].value)) + 1;
-                    MotionList[count++] = x & 0xff;
-                    MotionList[count++] = ((x >> 8) & 0xff) | 0x80;
-                  }
-                }
-                MotionList[count++] = 68;
-                MotionList[count++] = 89;
-                MotionList[count++] = Number(document.getElementById('MotionTable').getElementsByTagName('div')[i + 1].getElementsByClassName('textbox')[j * 2].value);
-                break;
-              }
-            }
-          }
+      // 找到目标行，先把 opcode 和 40 个 motion 推入
+      MotionList.push(244);
+      const boxes = rows[i + 1].getElementsByClassName('textbox');
+      for (let j = 1; j <= 40; j++) {
+        MotionList.push(Number(boxes[j].value) || 0);
+      }
+      // 尾标
+      MotionList.push(78, 69);
+
+      // 发布 MotionList
+      console.log("244 publish start, length =", MotionList.length);
+      MotionList.forEach(b => {
+        SendPackage.package = b;
+        interface.publish(SendPackage);
+        console.log("motionlist =", b);
+        sleep(2);
+      });
+      console.log("244 publish end");
+
+      // 接着一次性处理 motion_id 和 motion_delay
+      for (let m = 0; m < 40; m++) {
+        const motion_id    = Number(boxes[2*m + 1]?.value) || 0;
+        const motion_delay = Number(boxes[2*m + 2]?.value) || 0;
+
+        if (motion_id) {
+          MotionSaveId(motion_id);
         }
-        if(document.getElementById('MotionTable').getElementsByTagName('div')[i+1].getElementsByClassName('textbox')[1].value != 0)
-        {
-          MotionList[count++] = 69; //finish big motion
-          MotionList[count++] = 78; //finish big motion
-          MotionList[count++] = count - 3;
-          MotionList[count++] = 78;
-          MotionList[count] = 69;
-          console.log("244 publish start");
-          console.log(MotionList.length);
-          for (var a = 0; a < MotionList.length; a++) 
-          {
-            SendPackage.package = MotionList[a];
-            interface.publish(SendPackage);
-            console.log(SendPackage.package);
-            sleep(2);
-          }
-          console.log("244 publish end");
-          break;
-        }
-        else
-        {
-          document.getElementById('label').innerHTML = "A1 or MotionList should not be empty";
+        if (motion_delay) {
+          SendPackage.delay[m] = motion_delay;
+          SendPackage.cnt      = m;
         }
       }
+      console.log("delay =", SendPackage.delay, "cnt =", SendPackage.cnt);
+
+      break;  // 找到对应 ID 就结束外层循环
     }
-  }
-  
+
+  // 清空待发布列表
   MotionList.length = 0;
+}
+  //   for (let i = 0; i < document
+  //     .getElementById('MotionTable')
+  //     .getElementsByTagName('div').length; i += 1) {
+  //     // 讀這一列的 ID
+  //     const rowId = Number(
+  //       document.getElementById('MotionTable')
+  //               .getElementsByTagName('div')[i]
+  //               .getElementsByClassName('textbox')[0]
+  //               .value
+  //     );
+  //     if (ID === rowId) {
+  //       // opcode 固定 244
+  //       MotionList.push(244);
+  //       for (let j = 0; j < 40; j++) {
+  //         const motion = Number(
+  //           document.getElementById('MotionTable')
+  //                   .getElementsByTagName('div')[i + 1]
+  //                   .getElementsByClassName('textbox')[j + 1]
+  //                   .value
+  //         );
+  //         MotionList.push(motion);
+  //       }
+  //       // 尾標 N(78), E(69)
+  //       MotionList.push(78, 69);
+
+  //       console.log("244 publish start, length =", MotionList.length);
+  //       for (const b of MotionList) {
+  //         SendPackage.package = b;
+  //         interface.publish(SendPackage);
+  //         console.log("motionlist = ",b);
+  //         sleep(2);
+  //       }
+
+  //       /////////////////////////////////////////////
+  //       const boxes = document
+  //         .getElementById('MotionTable')
+  //         .getElementsByTagName('div')[i + 1]
+  //         .getElementsByClassName('textbox');
+
+  //       // 一次跑 40 組：2*m+1 為 motion_id，2*m+2 為 motion_delay
+  //       for (let m = 0; m < 40; m++) {
+  //         // 讀 motion_id
+  //         const motion_id = Number(boxes[2*m + 1]?.value) || 0;
+  //         if (motion_id !== 0) {
+  //           // MotionList.push(motion_id);
+  //           MotionSaveId(motion_id)
+  //         }
+
+  //         // 讀 motion_delay
+  //         const motion_delay = Number(boxes[2*m + 2]?.value) || 0;
+  //         if (motion_delay !== 0) {
+  //           SendPackage.delay[m] = motion_delay;
+  //           SendPackage.cnt = m;
+  //         }
+
+  //       }
+  //       // console.log(`motion #${m} → id: ${motion_id}, delay: ${motion_delay}`);
+  //       console.log("delay =", SendPackage.delay);
+  //       console.log("cnt =", SendPackage.cnt);
+      
+  //       console.log("motionlist publish end");
+  //       break;
+  //     }
+  //   }
+  // }
+  
+  // MotionList.length = 0;
+}
+
+function MotionSaveId(motion_id) {
+  console.log("motion_id =", motion_id);
+  SendPackage.sectorname = String(motion_id);
+
+  // 1) 一次性获取表格和所有行
+  const speedRows = document
+    .getElementById('RelativeSpeedTable')
+    .getElementsByTagName('div');
+  const posRows = document
+    .getElementById('RelativePositionTable')
+    .getElementsByTagName('div');
+
+  // 2) 初始 header
+  const MotionList = [83, 84, 245];
+
+  // 3) 找到对应 row
+  for (let i = 0; i < posRows.length; i += 2) {
+    const idTextbox = posRows[i].getElementsByClassName('textbox')[0];
+    if (Number(idTextbox.value) !== motion_id) continue;
+
+    // 4) 拿到这一行 speed / pos 的 textbox 集合
+    const speedBoxes = speedRows[i + 1].getElementsByClassName('textbox');
+    const posBoxes   = posRows[i + 1].getElementsByClassName('textbox');
+
+    // 5) 一次性 push speed,pos 序列
+    for (let j = 1; j <= 27; j++) {
+      MotionList.push(
+        Number(speedBoxes[j].value),
+        Number(posBoxes[j].value)
+      );
+    }
+
+    // 6) 加尾标
+    MotionList.push(78, 69);
+
+    break;  // 找到就跳出
+  }
+
+  // 7) 发布
+  console.log("245 publish start, length =", MotionList.length);
+  MotionList.forEach(b => {
+    SendPackage.package = b;
+    interface.publish(SendPackage);
+    console.log(b);
+    sleep(2);
+  });
+  console.log("245 publish end");
 }
 
 function Locked()
@@ -1254,7 +1374,7 @@ function addreduce(value)
         break;
       }  
     }
-    if(resetID>26 || resetID<1)
+    if(resetID>27 || resetID<1)
     {
       numflag = false;
       Motorflag = true;
@@ -1323,7 +1443,7 @@ function addreduce(value)
         break;
       }  
     }
-    if(resetID>26 || resetID<1)
+    if(resetID>27 || resetID<1)
     {
       numflag = false;
       Motorflag = true;
@@ -1405,7 +1525,7 @@ function Multiple()
     }
     if(numflag == true)
 	  {
-      for (var j = 1; j <= 26; j++)
+      for (var j = 1; j <= 27; j++)
 	    {
         var value = Number(document.getElementById('RelativePositionTable').getElementsByTagName('div')[n+1].getElementsByClassName('textbox')[j].value);
         document.getElementById('RelativePositionTable').getElementsByTagName('div')[n+1].getElementsByClassName('textbox')[j].value = value * times;

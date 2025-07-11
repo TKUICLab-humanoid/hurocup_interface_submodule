@@ -451,7 +451,7 @@
 
 		function strategylocation() {
 			// 获取选定的值
-			location_msg.data = "/home/iclab/Desktop/humanoid/src/wula/wula/"+ document.getElementById('strategy_location').value + "/Parameter";
+			location_msg.data = "/home/iclab/Desktop/towen/src/strategy/strategy/"+ document.getElementById('strategy_location').value + "/Parameter";
 			console.log(`Selected strategy location: ${location_msg.data}`);
 			location_strategy.publish(location_msg);
 
