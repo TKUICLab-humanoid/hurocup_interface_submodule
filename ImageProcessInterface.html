@@ -206,8 +206,8 @@
 
 		//-----
 		var connectFlag = false;
-		var myAddress = "172.17.121.10";
-		// var myAddress = "0.0.0.0";
+		// var myAddress = "172.17.121.10";
+		var myAddress = "0.0.0.0";
 
 		var B_SetupCamera_Flag = true;
 		var B_Start_Flag = true;
@@ -237,7 +237,7 @@
 			console.log("Connecting address is", myAddress)
 			ros.connect("ws://" + myAddress + ":9090");
 			// document.getElementById("orign_image").src = "http://" + myAddress + ":8080/stream?topic=/image_raw";
-			document.getElementById("orign_image").src = `http://${myAddress}:8080/stream?topic=${encodeURIComponent('/zed/zed_node/left/image_rect_color/compressed')}`;
+			document.getElementById("orign_image").src = "http://0.0.0.0:8080/stream?topic=/zed/zed_node/rgb_raw/image_raw_color"//`http://0.0.0.0:8080/stream?topic=${encodeURIComponent('/zed/zed_node/left/image_rect_color/compressed')}`;
 			document.getElementById("filter_image").src = "http://" + myAddress + ":8080/stream?topic=/build_image";
 			document.getElementById("color_image").src = "http://" + myAddress + ":8080/stream?topic=/processed_image";
 			strategylocation();

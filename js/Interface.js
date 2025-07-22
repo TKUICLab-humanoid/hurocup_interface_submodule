@@ -94,7 +94,7 @@ var SendPackageCallBack = null;
 var ExecuteCallBack = null;
 
 var connectFlag = false;
-var myAddress = "172.17.121.10";
+var myAddress = "0.0.0.0";
 
 var executeSubscribeFlag = false;
 var standSubscribeFlag = false;
