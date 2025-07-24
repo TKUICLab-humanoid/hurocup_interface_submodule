@@ -120,66 +120,193 @@ function NewRelativePosition()
   });
 }
 
-function NewRelativeSpeed()
-{
-  var num=document.getElementById('RelativeSpeedTable').getElementsByClassName('inthesmallbox2').length+1;
+// function NewRelativeSpeed()
+// {
+//   var num=document.getElementById('RelativeSpeedTable').getElementsByClassName('inthesmallbox2').length+1;
 
-  //creates new 'div' in the page
-  var div1=document.createElement('div');
+//   //creates new 'div' in the page
+//   var div1=document.createElement('div');
+//   div1.className = "inthesmallbox2";
+//   var div2=document.createElement('div');
+//   div2.className = "inthesmallbox4";
+
+//   //first column    
+//   var input=document.createElement('input');
+//   input.type='text';
+//   input.id = 'relativeSpeed'+num;
+//   input.className = 'textbox';
+//   input.style.backgroundColor='darkred';
+//   input.value=-1;
+//   div1.appendChild(input);
+  
+//   //loop to create the rest of the 41 columns starting with 'Name'
+//   for (var i = 1; i <= 41 ; i++) 
+//   {  
+//     //odd number columns
+//     if (i%2==1 && i!=1) 
+//     {
+//       var input=document.createElement('input');
+//       input.type='text';
+//       input.className='textbox';
+//       input.value=10;
+//       div2.appendChild(input);
+//     }  
+//     //even number columns
+//     if (i%2==0) 
+//     {
+//       var input=document.createElement('input');
+//       input.type='text';
+//       input.className='textbox';
+//       input.value=10;
+//       div2.appendChild(input);
+//     }
+//     //second column
+//     if(i==1)
+//     {
+//       var input=document.createElement('input');
+//       input.type='text';
+//       input.className='textbox';
+//       input.value=-1;
+//       div2.appendChild(input);
+//     }
+//   }
+//   //appends them into RelativeSpeedTable <div> in MotionControlInterface.html
+//   document.getElementById('RelativeSpeedTable').appendChild(div1);
+//   document.getElementById('RelativeSpeedTable').appendChild(div2);
+
+//   //sets the relativeSpeed ID to be the same value as relativePosition ID
+//   $('#relativeSpeed'+num).change(function ()
+//   {
+//     $('#relativePosition'+num).val($(this).val());
+//   });
+// }
+// function NewRelativeSpeed() {
+//   // 計算新列編號
+//   var num = document
+//     .getElementById('RelativeSpeedTable')
+//     .getElementsByClassName('inthesmallbox2')
+//     .length + 1;
+
+//   // 建立第一欄（relativeSpeedX）
+//   var div1 = document.createElement('div');
+//   div1.className = "inthesmallbox2";
+//   var input1 = document.createElement('input');
+//   input1.type = 'text';
+//   input1.id = 'relativeSpeed' + num;
+//   input1.className = 'textbox';
+//   input1.style.backgroundColor = 'darkred';
+//   input1.value = -1;
+//   div1.appendChild(input1);
+
+//   // 建立後面 41 欄
+//   var div2 = document.createElement('div');
+//   div2.className = "inthesmallbox4";
+
+//   // 要設為 1000 的欄位索引（i 對應第 2~42 欄裡「第 i 欄」）
+//   var specialCols = [17, 18, 19, 20, 23, 24, 25, 26];
+
+//   for (var i = 1; i <= 41; i++) {
+//     var input = document.createElement('input');
+//     input.type = 'text';
+//     input.className = 'textbox';
+
+//     if (i === 1) {
+//       // 對應第 2 欄，預設 -1
+//       input.value = -1;
+//     } else if (specialCols.includes(i)) {
+//       // 在 specialCols 裡的欄位，設為 1000
+//       input.value = 1000;
+//     } else {
+//       // 其餘欄位維持預設 10
+//       input.value = 10;
+//     }
+
+//     div2.appendChild(input);
+//   }
+
+//   // 把這兩個 div 插回 RelativeSpeedTable
+//   var table = document.getElementById('RelativeSpeedTable');
+//   table.appendChild(div1);
+//   table.appendChild(div2);
+
+//   // 綁定：當 relativeSpeedX 改變時，同步到 relativePositionX
+//   $('#relativeSpeed' + num).change(function () {
+//     $('#relativePosition' + num).val($(this).val());
+//   });
+// }
+
+
+function NewRelativeSpeed() {
+  // 計算新列編號
+  var num = document
+    .getElementById('RelativeSpeedTable')
+    .getElementsByClassName('inthesmallbox2')
+    .length + 1;
+
+  // 定義要用到的 specialCols
+  var specialCols = [17, 18, 19, 20, 23, 24, 25, 26];
+
+  // clamp helper
+  function makeClamper(maxVal) {
+    return function() {
+      var v = parseFloat(this.value);
+      if (!isNaN(v) && v > maxVal) {
+        this.value = maxVal;
+      }
+    };
+  }
+
+  // 建立第一欄（relativeSpeedX），它不在 specialCols 裡，上限設 100
+  var div1 = document.createElement('div');
   div1.className = "inthesmallbox2";
-  var div2=document.createElement('div');
+  var input1 = document.createElement('input');
+  input1.type = 'text';
+  input1.id = 'relativeSpeed' + num;
+  input1.className = 'textbox';
+  input1.style.backgroundColor = 'darkred';
+  input1.value = -1;
+  // clamp 限制
+  input1.addEventListener('change', makeClamper(100));
+  div1.appendChild(input1);
+
+  // 建立後面 41 欄
+  var div2 = document.createElement('div');
   div2.className = "inthesmallbox4";
 
-  //first column    
-  var input=document.createElement('input');
-  input.type='text';
-  input.id = 'relativeSpeed'+num;
-  input.className = 'textbox';
-  input.style.backgroundColor='darkred';
-  input.value=-1;
-  div1.appendChild(input);
-  
-  //loop to create the rest of the 41 columns starting with 'Name'
-  for (var i = 1; i <= 41 ; i++) 
-  {  
-    //odd number columns
-    if (i%2==1 && i!=1) 
-    {
-      var input=document.createElement('input');
-      input.type='text';
-      input.className='textbox';
-      input.value=10;
-      div2.appendChild(input);
-    }  
-    //even number columns
-    if (i%2==0) 
-    {
-      var input=document.createElement('input');
-      input.type='text';
-      input.className='textbox';
-      input.value=10;
-      div2.appendChild(input);
-    }
-    //second column
-    if(i==1)
-    {
-      var input=document.createElement('input');
-      input.type='text';
-      input.className='textbox';
-      input.value=-1;
-      div2.appendChild(input);
-    }
-  }
-  //appends them into RelativeSpeedTable <div> in MotionControlInterface.html
-  document.getElementById('RelativeSpeedTable').appendChild(div1);
-  document.getElementById('RelativeSpeedTable').appendChild(div2);
+  // 用 let 來保證每個迴圈都能正確 capture i
+  for (let i = 1; i <= 41; i++) {
+    let input = document.createElement('input');
+    input.type = 'text';
+    input.className = 'textbox';
 
-  //sets the relativeSpeed ID to be the same value as relativePosition ID
-  $('#relativeSpeed'+num).change(function ()
-  {
-    $('#relativePosition'+num).val($(this).val());
+    // 設定初始值
+    if (i === 1) {
+      input.value = -1;
+    } else if (specialCols.includes(i)) {
+      input.value = 1000;
+    } else {
+      input.value = 10;
+    }
+
+    // 決定這個欄位的 clamp 上限
+    var maxVal = specialCols.includes(i) ? 10000 : 100;
+    input.addEventListener('change', makeClamper(maxVal));
+
+    div2.appendChild(input);
+  }
+
+  // 插回畫面
+  var table = document.getElementById('RelativeSpeedTable');
+  table.appendChild(div1);
+  table.appendChild(div2);
+
+  // 綁定：當 relativeSpeedX 改變時，同步到 relativePositionX
+  $('#relativeSpeed' + num).change(function () {
+    $('#relativePosition' + num).val($(this).val());
   });
 }
+
+
 
 function NewAbsolutePosition()
 {
@@ -242,64 +369,118 @@ function NewAbsolutePosition()
   });
 }
 
-function NewAbsoluteSpeed()
-{
-  var num=document.getElementById('AbsoluteSpeedTable').getElementsByClassName('inthesmallbox2').length+1; 
+// function NewAbsoluteSpeed()
+// {
+//   var num=document.getElementById('AbsoluteSpeedTable').getElementsByClassName('inthesmallbox2').length+1; 
   
-  //creates new 'div' in the page
-  var div1=document.createElement('div');
+//   //creates new 'div' in the page
+//   var div1=document.createElement('div');
+//   div1.className = "inthesmallbox2";
+//   var div2=document.createElement('div');
+//   div2.className = "inthesmallbox4";
+
+//   //first column    
+//   var input=document.createElement('input');
+//   input.type='text';
+//   input.className='textbox';
+//   input.style.backgroundColor='darkred';
+//   input.id = 'absoluteSpeed'+num;
+//   input.value=-1;
+//   div1.appendChild(input);
+
+//   //loop to create the rest of the 41 columns starting with 'Name'
+//   for (var i = 1; i <= 41 ; i++) 
+//   {  
+//     //odd number columns
+//     if (i%2==1 && i!=1) 
+//     {
+//       var input=document.createElement('input');
+//       input.type='text';
+//       input.className='textbox';
+//       input.value=10;
+//       div2.appendChild(input);
+//     }  
+//     //even number columns
+//     if (i%2==0) 
+//     {
+//       var input=document.createElement('input');
+//       input.type='text';
+//       input.className='textbox';
+//       input.value=10;
+//       div2.appendChild(input);
+//     }
+//     //second column
+//     if(i==1)
+//     {
+//       var input=document.createElement('input');
+//       input.type='text';
+//       input.className='textbox';
+//       input.value=-1;
+//       div2.appendChild(input);
+//     }
+//   }
+//   //appends them into AbsoluteSpeedTable <div> in the MotionControlInterface
+//   document.getElementById('AbsoluteSpeedTable').appendChild(div1);
+//   document.getElementById('AbsoluteSpeedTable').appendChild(div2);
+  
+//   //sets the absoluteSpeed ID to be the same value as absolutePosition ID
+//   $('#absoluteSpeed'+num).change(function ()
+//   {
+//     $('#absolutePosition'+num).val($(this).val()); 
+//   });
+// }
+
+function NewAbsoluteSpeed() {
+  var num = document
+    .getElementById('AbsoluteSpeedTable')
+    .getElementsByClassName('inthesmallbox2')
+    .length + 1;
+
+  // 建立第一欄
+  var div1 = document.createElement('div');
   div1.className = "inthesmallbox2";
-  var div2=document.createElement('div');
+  var input1 = document.createElement('input');
+  input1.type = 'text';
+  input1.className = 'textbox';
+  input1.style.backgroundColor = 'darkred';
+  input1.id = 'absoluteSpeed' + num;
+  input1.value = -1;
+  div1.appendChild(input1);
+
+  // 建立後面 41 欄
+  var div2 = document.createElement('div');
   div2.className = "inthesmallbox4";
 
-  //first column    
-  var input=document.createElement('input');
-  input.type='text';
-  input.className='textbox';
-  input.style.backgroundColor='darkred';
-  input.id = 'absoluteSpeed'+num;
-  input.value=-1;
-  div1.appendChild(input);
+  // 想要變 1000 的欄位 index（i 對應到第 2~42 欄中的第 i 欄）
+  var specialCols = [17, 18, 19, 20, 23, 24, 25, 26];
 
-  //loop to create the rest of the 41 columns starting with 'Name'
-  for (var i = 1; i <= 41 ; i++) 
-  {  
-    //odd number columns
-    if (i%2==1 && i!=1) 
-    {
-      var input=document.createElement('input');
-      input.type='text';
-      input.className='textbox';
-      input.value=10;
-      div2.appendChild(input);
-    }  
-    //even number columns
-    if (i%2==0) 
-    {
-      var input=document.createElement('input');
-      input.type='text';
-      input.className='textbox';
-      input.value=10;
-      div2.appendChild(input);
+  for (var i = 1; i <= 41; i++) {
+    var input = document.createElement('input');
+    input.type = 'text';
+    input.className = 'textbox';
+
+    if (i === 1) {
+      // 原本第 2 欄 (i==1) 預設 -1
+      input.value = -1;
+    } else if (specialCols.includes(i)) {
+      // 在 specialCols 裡面的，設為 1000
+      input.value = 1000;
+    } else {
+      // 其餘欄位維持預設 10
+      input.value = 10;
     }
-    //second column
-    if(i==1)
-    {
-      var input=document.createElement('input');
-      input.type='text';
-      input.className='textbox';
-      input.value=-1;
-      div2.appendChild(input);
-    }
+
+    div2.appendChild(input);
   }
-  //appends them into AbsoluteSpeedTable <div> in the MotionControlInterface
-  document.getElementById('AbsoluteSpeedTable').appendChild(div1);
-  document.getElementById('AbsoluteSpeedTable').appendChild(div2);
-  
-  //sets the absoluteSpeed ID to be the same value as absolutePosition ID
-  $('#absoluteSpeed'+num).change(function ()
-  {
-    $('#absolutePosition'+num).val($(this).val()); 
+
+  // 插入到畫面
+  var table = document.getElementById('AbsoluteSpeedTable');
+  table.appendChild(div1);
+  table.appendChild(div2);
+
+  // 綁定：#absoluteSpeedX 改變時，同步到 #absolutePositionX
+  $('#absoluteSpeed' + num).change(function () {
+    $('#absolutePosition' + num).val($(this).val());
   });
 }
 

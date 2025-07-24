@@ -206,8 +206,8 @@
 
 		//-----
 		var connectFlag = false;
-		// var myAddress = "172.17.121.10";
-		var myAddress = "0.0.0.0";
+		var myAddress = "172.17.121.10";
+		// var myAddress = "0.0.0.0";
 
 		var B_SetupCamera_Flag = true;
 		var B_Start_Flag = true;
@@ -227,21 +227,25 @@
 		var Camauto_exposureValue = false;
 
 		function enterAddress() {
-			if(connectFlag)
-			{
+			if (connectFlag) {
 				ros.close();
 				connectFlag = false;
 			}
-			console.log("connect is",connectFlag)
+			console.log("connect is", connectFlag);
 			myAddress = document.getElementById("addressSelect").value;
-			console.log("Connecting address is", myAddress)
+			console.log("Connecting address is", myAddress);
+			
+			// WebSocket 連線 (9090)
 			ros.connect("ws://" + myAddress + ":9090");
-			// document.getElementById("orign_image").src = "http://" + myAddress + ":8080/stream?topic=/image_raw";
-			document.getElementById("orign_image").src = "http://0.0.0.0:8080/stream?topic=/zed/zed_node/rgb_raw/image_raw_color"//`http://0.0.0.0:8080/stream?topic=${encodeURIComponent('/zed/zed_node/left/image_rect_color/compressed')}`;
+
+			// 所有影像流都改用 myAddress（不要再用 0.0.0.0）
+			document.getElementById("orign_image").src = "http://" + myAddress + ":8080/stream?topic=/zed/zed_node/rgb_raw/image_raw_color";
 			document.getElementById("filter_image").src = "http://" + myAddress + ":8080/stream?topic=/build_image";
 			document.getElementById("color_image").src = "http://" + myAddress + ":8080/stream?topic=/processed_image";
+
 			strategylocation();
 		}
+
 		
 
 		var location_strategy = new ROSLIB.Topic({
@@ -1097,12 +1101,12 @@
 						</tr>
 						<tr>
 							<td rowspan="2"><input style="width: 39px;" type="text" class="ValueText" id="HorizontalPositionValue" size="12" value="2048" onchange="rangeHorizontalPosition(this.value)" /></td>
-							<td><input class="Range" id="HorizontalPositionRange" name="HorizontalPositionRange" type="range" min="0" max="4095"
+							<td><input class="Range" id="HorizontalPositionRange" name="HorizontalPositionRange" type="range" min="1548" max="2548"
 								 value="2048" oninput="showHorizontalPosition(this.value)"/></td>
 							<td rowspan="2"><input style="width: 39px;" type="text" class="ValueText" id="HorizontalSpeedValue" size="12" value="1" onchange="rangeHorizontalSpeed(this.value)" /></td>
 						</tr>
 						<tr>
-							<td><input class="Range" id="HorizontalSpeedRange" name="HorizontalSpeedRange" type="range" min="1" max="1023"
+							<td><input class="Range" id="HorizontalSpeedRange" name="HorizontalSpeedRange" type="range" min="1" max="200"
 								 value="1" oninput="showHorizontalSpeed(this.value)"/></td>
 						</tr>
 						<tr>
@@ -1112,12 +1116,12 @@
 						</tr>
 						<tr>
 							<td rowspan="2"><input style="width: 39px;" type="text" class="ValueText" id="VerticalPositionValue" size="12" value="2048" onchange="rangeVerticalPosition(this.value)" /></td>
-							<td><input class="Range" id="VerticalPositionRange" name="VerticalPositionRange" type="range" min="0" max="4095"
+							<td><input class="Range" id="VerticalPositionRange" name="VerticalPositionRange" type="range" min="1023" max="2048"
 								 value="2048" oninput="showVerticalPosition(this.value)" /></td>
 							<td rowspan="2"><input style="width: 39px;" type="text" class="ValueText" id="VerticalSpeedValue" size="12" value="1" onchange="rangeVerticalSpeed(this.value)" /></td>
 						</tr>
 						<tr>
-							<td><input class="Range" id="VerticalSpeedRange" name="VerticalSpeedRange" type="range" min="1" max="1023" value="1"
+							<td><input class="Range" id="VerticalSpeedRange" name="VerticalSpeedRange" type="range" min="1" max="200" value="1"
 								 oninput="showVerticalSpeed(this.value)" /></td>
 						</tr>
 					</table>
