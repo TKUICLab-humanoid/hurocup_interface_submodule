@@ -580,7 +580,7 @@ function Reverse()
     }
     if(flag == true)
 	  {
-      for(var j = 1; j <= 21; j++)
+      for(var j = 1; j <= 29; j++)
 	    {
         var value = Number(document.getElementById('RelativePositionTable').getElementsByTagName('div')[n+1].getElementsByClassName('textbox')[j].value);
         document.getElementById('RelativePositionTable').getElementsByTagName('div')[n+1].getElementsByClassName('textbox')[j].value = value * (-1);
@@ -631,7 +631,7 @@ function Copy()
 	  {
       Add();
       var num = document.getElementById('RelativePositionTable').getElementsByTagName('div').length;
-      for (var j = 1; j <= 21; j++)
+      for (var j = 1; j <= 27; j++)
 	    {
 
         var x = Number(document.getElementById('RelativePositionTable').getElementsByTagName('div')[n+1].getElementsByClassName('textbox')[j].value);
