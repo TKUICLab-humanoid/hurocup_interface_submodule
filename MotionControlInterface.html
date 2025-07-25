@@ -428,11 +428,22 @@
             </div>
         </div> 
         <div id="rightarea">
-                <div id="robotpic">
-                    <div style="float: left; height: 500px ; width: 270px"> 
-                        <img src="./picture/towen.webp" style="margin-right: 50px; width: 100%;height: 100%; border: solid black 2px;">
-                    </div> 
-                </div>
+            <div id="robotpic">
+                <div style="float: left; margin-left: 70px;"> 
+                    X_Series&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Pro_Series
+                </div> 
+                <div style="float: left;margin-top: 10px;"> 
+                    Position: &nbsp;<input type="text" id="X_series_position" value=10 style="width:50px;margin-left: 5px;" onclick="Position();" onkeydown="if (event.key === 'Enter') Position(this.value)">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                    <input type="text" id="Pro_series_position" value=742 style="width:50px;margin-left: 12px;" >
+                </div> 
+                <div style="float: left;"> 
+                    Speed &nbsp;&nbsp;&nbsp;: &nbsp;<input type="text" id="X_series_speed" value=10 style="width:50px;margin-left: 4px;" onclick="Speed();" onkeydown="if (event.key === 'Enter') Speed(this.value)">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                    <input type="text" id="Pro_series_speed" value=696 style="width:50px;margin-left: 12px">
+                </div> 
+                <div style="float: left; height: 470px ; width: 250px"> 
+                    <img src="./picture/towen.webp" style="margin-right: 50px; width: 100%;height: 100%; border: solid black 2px;">
+                </div> 
+            </div>
         </div>        
     </form>
 </body>

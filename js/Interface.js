@@ -1649,3 +1649,16 @@ function Merge(){
     
   }
 }
+
+function Position(){
+  var xp = document.getElementById("X_series_position").value;
+  var prop = Math.round(xp * 74.175824175824);
+  document.getElementById("Pro_series_position").value = prop;
+}
+
+function Speed(){
+  var xs = document.getElementById("X_series_speed").value;
+  var pros = Math.round(xs * 69.558772606601);
+  document.getElementById("Pro_series_speed").value = pros;
+}
+
