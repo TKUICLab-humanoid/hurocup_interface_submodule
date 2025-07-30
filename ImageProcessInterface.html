@@ -241,6 +241,7 @@
 			// 所有影像流都改用 myAddress（不要再用 0.0.0.0）
 			document.getElementById("orign_image").src = "http://" + myAddress + ":8080/stream?topic=/image_raw";
 			// document.getElementById("orign_image").src = "http://" + myAddress + ":8080/stream?topic=/zed/zed_node/rgb_raw/image_raw_color";
+			document.getElementById("orign_image").src = "http://" + myAddress + ":8080/stream?topic=/zed/zed_node/rgb_raw/image_raw_color";
 			document.getElementById("filter_image").src = "http://" + myAddress + ":8080/stream?topic=/build_image";
 			document.getElementById("color_image").src = "http://" + myAddress + ":8080/stream?topic=/processed_image";
 
