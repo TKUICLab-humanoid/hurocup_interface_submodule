@@ -266,7 +266,7 @@ function NewRelativeSpeed() {
   input1.style.backgroundColor = 'darkred';
   input1.value = -1;
   // clamp 限制
-  input1.addEventListener('change', makeClamper(100));
+  // input1.addEventListener('change', makeClamper(100));
   div1.appendChild(input1);
 
   // 建立後面 41 欄

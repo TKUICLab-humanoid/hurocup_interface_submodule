@@ -239,9 +239,9 @@
 			ros.connect("ws://" + myAddress + ":9090");
 
 			// 所有影像流都改用 myAddress（不要再用 0.0.0.0）
-			document.getElementById("orign_image").src = "http://" + myAddress + ":8080/stream?topic=/image_raw";
+			document.getElementById("orign_image").src = "http://" + myAddress + ":8080/stream?topic=/zoom_in";
 			// document.getElementById("orign_image").src = "http://" + myAddress + ":8080/stream?topic=/zed/zed_node/rgb_raw/image_raw_color";
-			document.getElementById("orign_image").src = "http://" + myAddress + ":8080/stream?topic=/zed/zed_node/rgb_raw/image_raw_color";
+			// document.getElementById("orign_image").src = "http://" + myAddress + ":8080/stream?topic=/zed/zed_node/rgb_raw/image_raw_color";
 			document.getElementById("filter_image").src = "http://" + myAddress + ":8080/stream?topic=/build_image";
 			document.getElementById("color_image").src = "http://" + myAddress + ":8080/stream?topic=/processed_image";
 
@@ -966,7 +966,7 @@
 				<img
 					id="orign_image"
 					style="width:320px; height:240px; display:inline-block;"
-					src="http://0.0.0.0:8080/stream?topic=/image_raw"					
+					src="http://0.0.0.0:8080/stream?topic=/zoom_in"					
 				/>
 				<!-- src="http://0.0.0.0:8080/stream?topic=/zed/zed_node/right/image_rect_color&image_transport=compressed"					 -->
 

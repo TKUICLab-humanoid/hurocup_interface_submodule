@@ -60,7 +60,7 @@
 
 		var wasOnline = true;
 		var ros = new ROSLIB.Ros({
-		url: "ws://172.17.121.10:9090"
+		url: "ws://0.0.0.0:9090"
 		});
 
 		function checkConnection() {
@@ -164,11 +164,11 @@
 			name: '/web/parameter_Topic',
 			messageType: 'tku_msgs/Parameter'
 		});
-		var paradata_Publisher = new ROSLIB.Topic({
-			ros: ros,
-			name: '/package/parameterdata',
-			messageType: 'tku_msgs/Parametermessage'
-		});
+		// var paradata_Publisher = new ROSLIB.Topic({
+		// 	ros: ros,
+		// 	name: '/package/parameterdata',
+		// 	messageType: 'tku_msgs/Parametermessage'
+		// });
 		var parameter_msg = new ROSLIB.Message({
 			x_swing_range: 0,
 			y_swing_range: 2.9,
@@ -186,6 +186,8 @@
 			now_stand_height: 23.5,
 			now_com_height: 29.5,
 			stand_balance: false,
+			hip_roll : 0.0,
+			ankle_roll :0.0
 		// 	// B_SplineParam: {
 		// 	// 	Kick_Point_X: 0.0,
 		// 	// 	Kick_Point_Y: 0.0,
@@ -198,35 +200,37 @@
 		// 	// }
 		});
 
-		var Parameter_message_msg = new ROSLIB.Message({
-			Walking_Mode: 0,
-			x_swing_range: 0,
-			y_swing_range: 2.9,
-			z_swing_range: 0,
-			period_t: 1200,
-			period_t2: 600,
-			sample_time: 40,
-			osc_lockrange: 0.56,
-			base_default_z: 3.2,
-			y_swing_shift: 0.6,
-			x_swing_com: 0.0,
-			base_lift_z: 0.0,
-			rightfoot_shift_z: 0.0,
-			com_y_swing: 0.0,
-			now_stand_height: 23.5,
-			now_com_height: 29.5,
-			stand_balance: false,
-			// B_SplineParam: {
-			// 	Kick_Point_X: 0.0,
-			// 	Kick_Point_Y: 0.0,
-			// 	Kick_Point_Z: 0.0,
-			// 	Back_Point_X: 0.0,
-			// 	Back_Point_Z: 0.0,
-			// 	Support_Foot_Hip_Upper_Pitch: 0.0,
-			// 	Kick_Foot_Ankle_Upper_Pitch: 0.0,
-			// 	Support_Foot_Ankle_Upper_Pitch: 0.0
-			// }
-		});
+		// var Parameter_message_msg = new ROSLIB.Message({
+		// 	Walking_Mode: 0,
+		// 	x_swing_range: 0,
+		// 	y_swing_range: 2.9,
+		// 	z_swing_range: 0,
+		// 	period_t: 1200,
+		// 	period_t2: 600,
+		// 	sample_time: 40,
+		// 	osc_lockrange: 0.56,
+		// 	base_default_z: 3.2,
+		// 	y_swing_shift: 0.6,
+		// 	x_swing_com: 0.0,
+		// 	base_lift_z: 0.0,
+		// 	rightfoot_shift_z: 0.0,
+		// 	com_y_swing: 0.0,
+		// 	now_stand_height: 23.5,
+		// 	now_com_height: 29.5,
+		// 	stand_balance: false,
+		// 	hip_roll : 0.0,
+		// 	ankle_roll :0.0
+		// 	// B_SplineParam: {
+		// 	// 	Kick_Point_X: 0.0,
+		// 	// 	Kick_Point_Y: 0.0,
+		// 	// 	Kick_Point_Z: 0.0,
+		// 	// 	Back_Point_X: 0.0,
+		// 	// 	Back_Point_Z: 0.0,
+		// 	// 	Support_Foot_Hip_Upper_Pitch: 0.0,
+		// 	// 	Kick_Foot_Ankle_Upper_Pitch: 0.0,
+		// 	// 	Support_Foot_Ankle_Upper_Pitch: 0.0
+		// 	// }
+		// });
 
 		var WaveRequest_Topic = new ROSLIB.Topic({
 				ros: ros,
@@ -306,6 +310,8 @@
 		var Back_Point_X_temp = 0.0;
 		var Back_Point_Z_temp = 0.0;
 		var Balance_tmp = false;
+		var	hip_roll_tmp 	= 0.0;
+		var	ankle_roll_tmp 	= 0.0;
 		var Support_Foot_Hip_Upper_Pitch_temp = 0.0;
 		var Kick_Foot_Ankle_Upper_Pitch_temp = 0.0;
 		var Support_Foot_Ankle_Upper_Pitch_temp = 0.0;
@@ -394,39 +400,39 @@
 				// document.getElementById("Right_4").value = msg.ForceSensorData[7];
 			});
 
-			if(Wave_Topic != null)
-			{
-				Wave_Topic.unsubscribe();
-			}
-			Wave_Topic = new ROSLIB.Topic({
-				ros: ros,
-				name: '/wave',
-				messageType: 'tku_msgs/wavelist'
-			});
-			Wave_Topic.subscribe(function (msg) 
-			{
-				msg.wavelist.clear;
-				point.clear;
-				r_move_x.clear;
-				l_move_x.clear;
-				for (var i = 0; i < msg.wavelist.length; i++) 
-				{
-					r_move_x[i] = msg.wavelist[i].R_move_X;
-					l_move_x[i] = msg.wavelist[i].L_move_X;
-					r_move_y[i] = msg.wavelist[i].R_move_Y;
-					l_move_y[i] = msg.wavelist[i].L_move_Y;
-					r_move_z[i] = msg.wavelist[i].R_move_Z;
-					l_move_z[i] = msg.wavelist[i].L_move_Z;
-					move_com_x[i] = msg.wavelist[i].move_COM_X;
-					move_com_y[i] = msg.wavelist[i].move_COM_Y;
-					move_com_z[i] = msg.wavelist[i].move_COM_Z;
-					r_Theta[i] = msg.wavelist[i].R_Theta;
-					l_Theta[i] = msg.wavelist[i].L_Theta;
-					point[i] = msg.wavelist[i].Point;
-				}
-				datalong = msg.wavelist.length;
-				console.log(datalong);
-			});
+			// if(Wave_Topic != null)
+			// {
+			// 	Wave_Topic.unsubscribe();
+			// }
+			// Wave_Topic = new ROSLIB.Topic({
+			// 	ros: ros,
+			// 	name: '/wave',
+			// 	messageType: 'tku_msgs/wavelist'
+			// });
+			// Wave_Topic.subscribe(function (msg) 
+			// {
+			// 	msg.wavelist.clear;
+			// 	point.clear;
+			// 	r_move_x.clear;
+			// 	l_move_x.clear;
+			// 	for (var i = 0; i < msg.wavelist.length; i++) 
+			// 	{
+			// 		r_move_x[i] = msg.wavelist[i].R_move_X;
+			// 		l_move_x[i] = msg.wavelist[i].L_move_X;
+			// 		r_move_y[i] = msg.wavelist[i].R_move_Y;
+			// 		l_move_y[i] = msg.wavelist[i].L_move_Y;
+			// 		r_move_z[i] = msg.wavelist[i].R_move_Z;
+			// 		l_move_z[i] = msg.wavelist[i].L_move_Z;
+			// 		move_com_x[i] = msg.wavelist[i].move_COM_X;
+			// 		move_com_y[i] = msg.wavelist[i].move_COM_Y;
+			// 		move_com_z[i] = msg.wavelist[i].move_COM_Z;
+			// 		r_Theta[i] = msg.wavelist[i].R_Theta;
+			// 		l_Theta[i] = msg.wavelist[i].L_Theta;
+			// 		point[i] = msg.wavelist[i].Point;
+			// 	}
+			// 	datalong = msg.wavelist.length;
+			// 	console.log(datalong);
+			// });
 		}
 
 		function enterAddress() {
@@ -436,8 +442,8 @@
 				connectFlag = false;
 			}
 			myAddress = document.getElementById("addressSelect").value;
-			console.log("Connecting address is", myAddress)
-			ros.connect("ws://" + myAddress + ":9090");
+			console.log("najsdhjkahsdConnecting address is", myAddress)
+			ros.connect("ws://0.0.0.0:9090");
 		}
 		var location_strategy = new ROSLIB.Topic({
 			ros: ros,
@@ -651,7 +657,8 @@
 				com_y_swing_tmp 		= walkinggait_parameter.com_y_swing;
 				now_stand_height_tmp 	= walkinggait_parameter.now_stand_height;
 				now_com_height_tmp 		= walkinggait_parameter.now_com_height;
-
+				hip_roll_tmp		= walkinggait_parameter.hip_roll;
+				ankle_roll_tmp		= walkinggait_parameter.ankle_roll;
 				switch (statetype) {
 					case 3:
 						//
@@ -670,6 +677,8 @@
 						document.getElementById("com_y_swing").value = com_y_swing_tmp;
 						document.getElementById("now_stand_height").value = now_stand_height_tmp;
 						document.getElementById("now_com_height").value = now_com_height_tmp;
+						document.getElementById("Hip_roll").value = hip_roll_tmp;
+						document.getElementById("Ankle_roll").value = ankle_roll_tmp;
 						if(Balance_tmp)
 							document.getElementById("balance_").checked;
 						else
@@ -686,23 +695,25 @@
 						document.getElementById("ccom_y_swing").value = com_y_swing_tmp;
 						document.getElementById("cnow_stand_height").value = now_stand_height_tmp;
 						document.getElementById("cnow_com_height").value = now_com_height_tmp;
+						document.getElementById("cHip_roll").value = hip_roll_tmp;
+						document.getElementById("cAnkle_roll").value = ankle_roll_tmp;
 						if(Balance_tmp)
 							document.getElementById("balance_").checked;
 						else
 							document.getElementById("balance_").unchecked;
 						break;
 
-					case 4:
-						document.getElementById("X_Swing").value = x_swing_range_tmp;
-						document.getElementById("Y_Swing").value = y_swing_range_tmp;
-						document.getElementById("Z_Swing").value = Z_Swing_Range_tmp;
-						document.getElementById("period_t").value = period_t_tmp;
-						document.getElementById("period_t2").value = period_t2_tmp;
-						document.getElementById("sample_time").value = sample_time_tmp;
-						document.getElementById("osc_lockrange").value = osc_lockrange_tmp;
-						document.getElementById("base_default_z").value = base_default_z_tmp;
-						document.getElementById("y_swing_shift").value = y_swing_shift_tmp;
-						break;
+					// case 4:
+					// 	document.getElementById("X_Swing").value = x_swing_range_tmp;
+					// 	document.getElementById("Y_Swing").value = y_swing_range_tmp;
+					// 	document.getElementById("Z_Swing").value = Z_Swing_Range_tmp;
+					// 	document.getElementById("period_t").value = period_t_tmp;
+					// 	document.getElementById("period_t2").value = period_t2_tmp;
+					// 	document.getElementById("sample_time").value = sample_time_tmp;
+					// 	document.getElementById("osc_lockrange").value = osc_lockrange_tmp;
+					// 	document.getElementById("base_default_z").value = base_default_z_tmp;
+					// 	document.getElementById("y_swing_shift").value = y_swing_shift_tmp;
+					// 	break;
 					case 1:
 						// document.getElementById("luX_Swing").value = x_swing_range_tmp;
 						document.getElementById("luY_Swing").value = y_swing_range_tmp;
@@ -719,6 +730,8 @@
 						document.getElementById("lucom_y_swing").value = com_y_swing_tmp;
 						document.getElementById("lunow_stand_height").value = now_stand_height_tmp;
 						document.getElementById("lunow_com_height").value = now_com_height_tmp;
+						document.getElementById("luHip_roll").value = hip_roll_tmp;
+						document.getElementById("luAnkle_roll").value = ankle_roll_tmp;
 						if(Balance_tmp)
 							document.getElementById("balance_").checked;
 						else
@@ -740,6 +753,8 @@
 						document.getElementById("ldcom_y_swing").value = com_y_swing_tmp;
 						document.getElementById("ldnow_stand_height").value = now_stand_height_tmp;
 						document.getElementById("ldnow_com_height").value = now_com_height_tmp;
+						document.getElementById("ldHip_roll").value = hip_roll_tmp;
+						document.getElementById("ldAnkle_roll").value = ankle_roll_tmp;
 						if(Balance_tmp)
 							document.getElementById("balance_").checked;
 						else
@@ -765,6 +780,8 @@
 			parameter_msg.com_y_swing = Number(com_y_swing_tmp);
 			parameter_msg.now_stand_height = Number(now_stand_height_tmp);
 			parameter_msg.now_com_height = Number(now_com_height_tmp);
+			parameter_msg.hip_roll = Number(hip_roll_tmp);
+			parameter_msg.ankle_roll = Number(ankle_roll_tmp);
 			
 			switch (statetype) {
 				case 3:
@@ -1197,6 +1214,47 @@
 					break;
 			}
 		}
+
+		function changeHip_roll_value(value)
+		{
+			hip_roll_tmp = value;
+			console.log(value);
+			switch (statetype) {
+				case 3:
+					document.getElementById("Hip_roll").checked = hip_roll_tmp;
+					break;
+				case 0:
+					document.getElementById("cHip_roll").checked = hip_roll_tmp;
+					break;
+				case 1:
+					document.getElementById("luHip_roll").checked = hip_roll_tmp;
+					break;
+				case 2:
+					document.getElementById("ldHip_roll").checked = hip_roll_tmp;
+					break;
+			}
+		}
+
+		function changeAnkle_roll(value)
+		{
+			ankle_roll_tmp = value;
+			console.log(value);
+			switch (statetype) {
+				case 3:
+					document.getElementById("Ankle_roll").checked = ankle_roll_tmp;
+					break;
+				case 0:
+					document.getElementById("cAnkle_roll").checked = ankle_roll_tmp;
+					break;
+				case 1:
+					document.getElementById("luAnkle_roll").checked = ankle_roll_tmp;
+					break;
+				case 2:
+					document.getElementById("ldAnkle_roll").checked = ankle_roll_tmp;
+					break;
+			}
+		}
+
 		function DrawaXYaxisfun()
 		{
 			var onepoint = document.getElementById("myCanvas");
@@ -2137,6 +2195,14 @@
 						<td>COM_HEIGHT</td>
 						<td><input type="text" name="now_com_height" id="cnow_com_height" value="0" style="width: 140px" onchange="changenow_com_height_value(this.value)"></td>
 					</tr>
+					<tr>
+						<td>Hip_roll</td>
+						<td><input type="text" name="Hip_roll" id="cHip_roll" value="0" style="width: 140px" onchange="changeHip_roll_value(this.value)"></td>
+					</tr>
+					<tr>
+						<td>Ankle_roll</td>
+						<td><input type="text" name="Ankle_roll" id="cAnkle_roll" value="0" style="width: 140px" onchange="changeAnkle_roll(this.value)"></td>
+					</tr>
 				</table>
 				<tr>
 					<td><input style="margin-top: 10px " type="checkbox" name="balance" id="cbalance_" value="cbalance" ></td>
@@ -2180,17 +2246,17 @@
 						<td><input type="text" name="sample_time" id="lusample_time" value="0" style="width: 140px" onchange="changesample_time_value(this.value)"></td>
 					</tr>-->
 					<tr>
-						<td>osc_lockrange</td>
+						<td>T_DSP</td>
 						<td><input type="text" name="osc_lockrange" id="osc_lockrange" value="0" style="width: 140px" onchange="changeosc_lockrange_value(this.value)"></td>
 					</tr>
 					<tr>
 						<td>base_default_z</td>
 						<td><input type="text" name="base_default_z" id="base_default_z" value="0" style="width: 140px" onchange="changebase_default_z_value(this.value)"></td>
 					</tr>
-					<tr>
+					<!-- <tr>
 						<td>right_z_shift</td>
 						<td><input type="text" name="rightfoot_shift_z" id="rightfoot_shift_z" value="0" style="width: 140px" onchange="changerightfoot_shift_z_value(this.value)"></td>
-					</tr>
+					</tr> -->
 					<!-- <tr>
 						<td>right_z_shift</td>
 						<td><input type="text" name="x_swing_com" id="x_swing_com" value="0" style="width: 140px" onchange="changex_swing_com_value(this.value)"></td>
@@ -2250,7 +2316,7 @@
 						<td><input type="text" name="sample_time" id="lusample_time" value="0" style="width: 140px" onchange="changesample_time_value(this.value)"></td>
 					</tr>-->
 					<tr>
-						<td>osc_lockrange</td>
+						<td>T_DSP</td>
 						<td><input type="text" name="osc_lockrange" id="luosc_lockrange" value="0" style="width: 140px" onchange="changeosc_lockrange_value(this.value)"></td>
 					</tr>
 					<tr>
@@ -2261,12 +2327,12 @@
 						<td>right_z_shift</td>
 						<td><input type="text" name="x_swing_com" id="lux_swing_com" value="0" style="width: 140px" onchange="changex_swing_com_value(this.value)"></td>
 					</tr> -->
-					<tr>
+					<!-- <tr>
 						<td>right_z_shift</td>
 						<td><input type="text" name="rightfoot_shift_z" id="lurightfoot_shift_z" value="0" style="width: 140px" onchange="changerightfoot_shift_z_value(this.value)"></td>
-					</tr>
+					</tr> -->
 					<tr>
-						<td>base_lift_z</td>
+						<td>Board_High</td>
 						<td><input type="text" name="base_lift_z" id="lubase_lift_z" value="0" style="width: 140px" onchange="changebase_lift_z_value(this.value)"></td>
 					</tr>
 					<tr>
@@ -2276,6 +2342,14 @@
 					<tr>
 						<td>COM_HEIGHT</td>
 						<td><input type="text" name="now_com_height" id="lunow_com_height" value="0" style="width: 140px" onchange="changenow_com_height_value(this.value)"></td>
+					</tr>
+					<tr>
+						<td>Hip_roll</td>
+						<td><input type="text" name="Hip_roll" id="luHip_roll" value="0" style="width: 140px" onchange="changeHip_roll_value(this.value)"></td>
+					</tr>
+					<tr>
+						<td>Ankle_roll</td>
+						<td><input type="text" name="Ankle_roll" id="luAnkle_roll" value="0" style="width: 140px" onchange="changeAnkle_roll(this.value)"></td>
 					</tr>
 				</table>
 				<tr>
@@ -2319,23 +2393,23 @@
 						<td><input type="text" name="sample_time" id="ldsample_time" value="0" style="width: 140px" onchange="changesample_time_value(this.value)"></td>
 					</tr>-->
 					<tr>
-						<td>osc_lockrange</td>
+						<td>T_DSP</td>
 						<td><input type="text" name="osc_lockrange" id="ldosc_lockrange" value="0" style="width: 140px" onchange="changeosc_lockrange_value(this.value)"></td>
 					</tr>
 					<tr>
 						<td>base_default_z</td>
 						<td><input type="text" name="base_default_z" id="ldbase_default_z" value="0" style="width: 140px" onchange="changebase_default_z_value(this.value)"></td>
 					</tr>
-					<tr>
+					<!-- <tr>
 						<td>right_z_shift</td>
 						<td><input type="text" name="rightfoot_shift_z" id="ldrightfoot_shift_z" value="0" style="width: 140px" onchange="changerightfoot_shift_z_value(this.value)"></td>
-					</tr>
+					</tr> -->
 					<!-- <tr>
 						<td>right_z_shift</td>
 						<td><input type="text" name="x_swing_com" id="ldx_swing_com" value="0" style="width: 140px" onchange="changex_swing_com_value(this.value)"></td>
 					</tr> -->
 					<tr>
-						<td>base_lift_z</td>
+						<td>Board_High</td>
 						<td><input type="text" name="base_lift_z" id="ldbase_lift_z" value="0" style="width: 140px" onchange="changebase_lift_z_value(this.value)"></td>
 					</tr>
 					<tr>
@@ -2345,6 +2419,14 @@
 					<tr>
 						<td>COM_HEIGHT</td>
 						<td><input type="text" name="now_com_height" id="ldnow_com_height" value="0" style="width: 140px" onchange="changenow_com_height_value(this.value)"></td>
+					</tr>
+					<tr>
+						<td>Hip_roll</td>
+						<td><input type="text" name="Hip_roll" id="ldHip_roll" value="0" style="width: 140px" onchange="changeHip_roll_value(this.value)"></td>
+					</tr>
+					<tr>
+						<td>Ankle_roll</td>
+						<td><input type="text" name="Ankle_roll" id="ldAnkle_roll" value="0" style="width: 140px" onchange="changeAnkle_roll(this.value)"></td>
 					</tr>
 				</table>
 				<tr>
