@@ -15,7 +15,7 @@
 
 		var wasOnline = true;
 		var ros = new ROSLIB.Ros({
-		url: "ws://172.17.121.10:9090"
+		url: "ws://0.0.0.0:9090"
 		});
 
 		function checkConnection() {
@@ -206,8 +206,8 @@
 
 		//-----
 		var connectFlag = false;
-		var myAddress = "172.17.121.10";
-		// var myAddress = "0.0.0.0";
+		// var myAddress = "172.17.121.10";
+		var myAddress = "0.0.0.0";
 
 		var B_SetupCamera_Flag = true;
 		var B_Start_Flag = true;
@@ -236,11 +236,10 @@
 			console.log("Connecting address is", myAddress);
 			
 			// WebSocket 連線 (9090)
-			ros.connect("ws://" + myAddress + ":9090");
+			ros.connect("ws://"+myAddress+":9090");
 
 			// 所有影像流都改用 myAddress（不要再用 0.0.0.0）
 			document.getElementById("orign_image").src = "http://" + myAddress + ":8080/stream?topic=/zoom_in";
-			// document.getElementById("orign_image").src = "http://" + myAddress + ":8080/stream?topic=/zed/zed_node/rgb_raw/image_raw_color";
 			// document.getElementById("orign_image").src = "http://" + myAddress + ":8080/stream?topic=/zed/zed_node/rgb_raw/image_raw_color";
 			document.getElementById("filter_image").src = "http://" + myAddress + ":8080/stream?topic=/build_image";
 			document.getElementById("color_image").src = "http://" + myAddress + ":8080/stream?topic=/processed_image";
@@ -381,11 +380,11 @@
 			});
 		}
 		function ColorModelForm() {
-			console.log("ColorModelForm");
+			console.log("Torque");
 			// document.getElementById("B_ColorModelForm").value = "Close Model Form";
 			// document.getElementById("container").style.height = "710px";
 			// document.getElementById("select").style.height = "400px";
-			changecolorlabel(document.getElementById("colorlabel").value);
+			// changecolorlabel(document.getElementById("colorlabel").value);
 			ColorFormcmd.buildingmodel = true;
 			ColorModelForm_Topic.publish(ColorFormcmd);
 			// } else {
@@ -897,7 +896,7 @@
 		}
 
 		#B_ColorModelForm {
-			width: 150px;
+			width: 200px;
 		}
 
 		#Camera {
@@ -1081,11 +1080,11 @@
 				<div>
 					<table width="320">
 						<tr>
-							<td>
+							<!-- <td>
 								<input style="margin-right: 5px; height:25px;" type="button" class="Button" id="B_Start" value="Start" onClick="WebStart()"></input>
-							</td>
+							</td> -->
 							<td>
-								<input style="margin-right: 5px; height:25px;" type="button" class="Button" id="B_ColorModelForm" value="Show Model Form"
+								<input style="margin-right: 10px; height:25px;" type="button" class="Button" id="B_ColorModelForm" value=" No Torque?  Push me ʕ•ᴥ•ʔ  "
 								 onClick="ColorModelForm()"></input>
 							</td>
 							<td>
