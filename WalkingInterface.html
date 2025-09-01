@@ -442,8 +442,10 @@
 				connectFlag = false;
 			}
 			myAddress = document.getElementById("addressSelect").value;
-			console.log("najsdhjkahsdConnecting address is", myAddress)
-			ros.connect("ws://0.0.0.0:9090");
+			console.log("Connecting address is", myAddress);
+			
+			// WebSocket 連線 (9090)
+			ros.connect("ws://"+myAddress+":9090");
 		}
 		var location_strategy = new ROSLIB.Topic({
 			ros: ros,

@@ -995,7 +995,10 @@ function Send()
   document.getElementById('CheckSumButton').disabled = true;
   var MotionList = [];
   var ID = Number(document.getElementById('SendID').value);
+  console.log("id = ",ID);
   var Sector = Number(document.getElementById('Sector').value);
+  console.log("Sector = ",Sector);
+
   var count = 0;
   // 假設 ID 是你要送的大動作 opcode（244）
   SendPackage.sectorname = document.getElementById('Sector').value;
