@@ -51,7 +51,7 @@
 			document.getElementById('connected').style.display = 'inline';
 			document.getElementById("orign_image").style.display = 'inline';
 			document.getElementById("color_image").style.display = 'inline';
-			document.getElementById("filter_image").style.display = 'inline';
+			// document.getElementById("filter_image").style.display = 'inline';
 			checkConnectionInterval = setInterval(checkConnection, 10);
 		});
 		ros.on('error', function (error) {
@@ -66,7 +66,7 @@
 			B_Measure_Flag = true;
 			document.getElementById("color_image").style.display = 'none';
 			document.getElementById("orign_image").style.display = 'none';
-			document.getElementById("filter_image").style.display = 'none';
+			// document.getElementById("filter_image").style.display = 'none';
 			document.getElementById('connected').style.display = 'none';
 			
 			document.body.style.backgroundImage = 'url(./picture/Gray_Background.jpg)';
@@ -152,6 +152,15 @@
 			messageType: 'std_msgs/Int16'
 		});
 		var CameraId_msg = new ROSLIB.Message({
+			data: 0
+		});
+
+		var BuildStatus_Topic = new ROSLIB.Topic({
+			ros: ros,
+			name: '/BuildStatus',
+			messageType: 'std_msgs/Int16'
+		});
+		var BuildStatus_msg = new ROSLIB.Message({
 			data: 0
 		});
 
@@ -241,7 +250,8 @@
 			// 所有影像流都改用 myAddress（不要再用 0.0.0.0）
 			document.getElementById("orign_image").src = "http://" + myAddress + ":8080/stream?topic=/zoom_in";
 			// document.getElementById("orign_image").src = "http://" + myAddress + ":8080/stream?topic=/zed/zed_node/rgb_raw/image_raw_color";
-			document.getElementById("filter_image").src = "http://" + myAddress + ":8080/stream?topic=/build_image";
+			
+			// document.getElementById("filter_image").src = "http://" + myAddress + ":8080/stream?topic=/build_image";
 			document.getElementById("color_image").src = "http://" + myAddress + ":8080/stream?topic=/processed_image";
 
 			strategylocation();
@@ -298,6 +308,22 @@
 			});
 		}
 		// http://0.0.0.0:8080/stream_viewer?topic=/image_raw
+
+		function SelectBuildFunction(){
+			var build_value = document.getElementById("build-select").value;
+			console.log("SelectBuildFunction value is ", build_value);
+			if(build_value == "All_color_build"){
+				BuildStatus_msg.data = 0;
+				BuildStatus_Topic.publish(BuildStatus_msg);
+				console.log("All_color_build");
+			}
+			else if(build_value == "Single_color_build"){
+				BuildStatus_msg.data = 1;
+				BuildStatus_Topic.publish(BuildStatus_msg);
+				console.log("Single_color_build");
+			}
+		}
+
 		function ResetColorModelFunction() {
 			document.getElementById("hminRange").value = 0;
 			document.getElementById("sminRange").value = 0;
@@ -424,6 +450,18 @@
 		
 		function changebuild(newValue) {
 			console.log(newValue)
+			var build_value = document.getElementById("build-select").value;
+			console.log("SelectBuildFunction value is ", build_value);
+			if(build_value == "All_color_build"){
+				BuildStatus_msg.data = 0;
+				BuildStatus_Topic.publish(BuildStatus_msg);
+				console.log("All_color_build");
+			}
+			else if(build_value == "Single_color_build"){
+				BuildStatus_msg.data = 1;
+				BuildStatus_Topic.publish(BuildStatus_msg);
+				console.log("Single_color_build");
+			}
 		}
 
 		function changecolorlabel(newValue) {
@@ -812,7 +850,7 @@
 		#container {
 			background-color: #333;
 			border: 2px black solid;
-			width: 1180px;
+			width: 850px;
 			height: 710px;
 			margin: 20px auto;
 			overflow: visible;
@@ -837,14 +875,14 @@
 			display: inline;
 		}
 
-		#div_filter_image {
+		/* #div_filter_image {
 			width: 320px;
 			height: 240px;
 			border: 1px #FFF solid;
 			margin: 25px 42px 24px 32px;
 			float: right;
 			display: inline;
-		}
+		} */
 
 		#HSV_Range {
 			width: 320px;
@@ -986,41 +1024,54 @@
 			</div>
 
 
-			<div id="div_filter_image">
-				<!-- <img id="filter_image" style="-webkit-user-select: none; display:inline;" src="http://172.17.121.10:8080/stream?topic=/build_image&image_transport=compressed"> -->
-				<img 
-					id="filter_image" 
-					style="width:320px; height:240px; display:inline-block;" 
-					src="http://0.0.0.0:8080/stream?topic=/build_image&image_transport=compressed"
-					alt="build_image Image Stream"
-				/>
-			</div>
+
 			<div id="HSV_Range">
-				<table width="320">
-					<tr>
-						<td>
-							<p class="text">Color Select : </p>
-						</td>
-						<td>
-							<select id="colorlabel" onChange="changecolorlabel(this.value)">
-								<option value="orange">Orange Range</option>
-								<option value="yellow">Yellow Range</option>
-								<option value="blue">Blue Range</option>
-								<option value="green">Green Range</option>
-								<option value="black">Black Range</option>
-								<option value="red">Red Range</option>
-								<option value="white">White Range</option>
-								<option value="others">Others Range</option>
-							</select>
-						</td>
-						<td align="center">
-							<input type="button" class="Button" value="Reset" onClick="ResetColorModelFunction()"></input>
-						</td>
-						<td align="center">
-							<input type="button" class="Button" value="Close" onClick="CloseColorModelFunction()"></input>
-						</td>
-					</tr>
+				<style>
+				table.control { border-collapse: collapse; width: auto; }
+				table.control td { padding: 4px; vertical-align: middle; }
+				td.label { width: 110px; white-space: nowrap; }   
+				td.controls { width: 230px; }                     
+				td.actions  { white-space: nowrap; }              
+				p.text { margin: 0; }
+				.select-lg { height: 26px; width: 100px; }        
+				.select-sm { height: 26px; width: 80px; }        
+				.Button { height: 26px; margin-left: 6px; }
+				</style>
+
+				<table class="control">
+				<tr>
+					<td class="label"><p class="text">Build Status:</p></td>
+					<td class="controls">
+					<select id="build-select" class="select-lg" onChange="changebuild(this.value)">
+						<option value="All_color_build">All_color</option>
+						<option value="Single_color_build">Single_color</option>
+					</select>
+					</td>
+					<!-- <td class="actions">
+					<input type="button" class="Button" value="Select" onClick="SelectBuildFunction()">
+					</td> -->
+				</tr>
+
+				<tr>
+					<td class="label"><p class="text">Color Select :</p></td>
+					<td class="controls">
+					<select id="colorlabel" class="select-sm" onChange="changecolorlabel(this.value)">
+						<option value="orange">Orange</option>
+						<option value="yellow">Yellow</option>
+						<option value="blue">Blue</option>
+						<option value="green">green</option>
+						<option value="black">Black</option>
+						<option value="red">Red</option>
+						<option value="white">White</option>
+						<option value="others">Others</option>
+					</select>
+					</td>
+					<td class="actions">
+					<input type="button" class="Button" value="Reset" onClick="ResetColorModelFunction()"><input type="button" class="Button" value="Close" onClick="CloseColorModelFunction()">
+					</td>
+				</tr>
 				</table>
+
 				<table>
 					<tr>
 						<td>
@@ -1070,7 +1121,7 @@
 							<input type="button" class="Button" id="SaveColorModel" value="Save" onClick="SaveColorModelFunction()" style="width:100px; height:30px"></input>
 						</td>
 						<td align="center">
-							<input type="button" class="Button" id="BuildColorModel" value="" onClick="BuildColorModelFunction()" style="width:100px;height:30px"></input>
+							<input type="button" class="Button" id="BuildColorModel" value="Build" onClick="BuildColorModelFunction()" style="width:100px;height:30px"></input>
 						</td>
 					</tr>
 				</table>
@@ -1184,40 +1235,7 @@
 			</div>
 
 
-			<div id="build_select">
-				<div>
-					<table width="320">
-						<tr>
-							<td>
-								<p class="text">build_select: </p>
-							</td>
-							<td>
-								<select id="build select" onChange="changebuild(this.value)">
-									<option value="All_color_build">All_color_build</option>
-									<option value="Single_color _build">Single_color _build</option>
-								</select>
-							</td>
-							<td align="center">
-								<input type="button" class="Button" value="build" onClick="ResetColorModelFunction()"></input>
-							</td>
-							<!-- <td>
-								<input style="margin-right: 5px; height:25px;" type="button" class="Button" id="B_ColorModelForm" value="build_image"
-								 onClick="ColorModelForm()"></input>
-							</td> -->
-						</tr>
-					</table>
-					<table width="320">
-						<tr>
-							<td>
-								<input style="margin-right: 5px; height:25px;" type="button" class="Button" id="B_ColorModelForm" value="single color build"
-								 onClick="ColorModelForm()"></input>
-							</td>
-						</tr>
-					</table>
-				</div>
-
-				
-			</div>
+			
 		</div>
 
 	</form>

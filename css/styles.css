@@ -127,7 +127,7 @@ body {
     width: 320px;
     height: 400px;
     border: 1px #FFF solid;
-    margin: 10px 32px 0px 32px;
+    margin: 10px 32px 0px 0px;
     float: right;
     display: none;
 }
